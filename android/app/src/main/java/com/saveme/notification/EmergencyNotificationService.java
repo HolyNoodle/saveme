@@ -12,7 +12,6 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.saveme.EmergencyNotificationModule;
 import com.saveme.MainActivity;
 import com.saveme.R;
 import com.saveme.volume.EmergencyTriggerService;
@@ -61,8 +60,6 @@ public class EmergencyNotificationService extends Service {
 
         state.started = false;
         state.mode = NotificationMode.INACTIVE;
-
-        EmergencyNotificationModule.triggerCallback(state);
     }
 
     public void createNotification(Notification notification) {
@@ -103,6 +100,12 @@ public class EmergencyNotificationService extends Service {
                 state.mode = NotificationMode.LISTENING;
             }
 
+            if (state.mode == NotificationMode.EMERGENCY || state.mode == NotificationMode.HELP) {
+                Intent newIntent = new Intent(getApplicationContext(), MainActivity.class);
+                newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(newIntent);
+            }
+
             Notification notification = createNotificationObject()
                     .setContentTitle(state.mode.toString() + " mode")
                     .setContentText("We got you")
@@ -122,7 +125,6 @@ public class EmergencyNotificationService extends Service {
         }
 
         state.started = true;
-        EmergencyNotificationModule.triggerCallback(state);
 
         return START_STICKY;
     }

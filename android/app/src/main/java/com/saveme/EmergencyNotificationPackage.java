@@ -1,7 +1,6 @@
 package com.saveme;
 
 import com.facebook.react.ReactPackage;
-import com.facebook.react.bridge.JavaScriptModule;
 import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
@@ -21,6 +20,7 @@ public class EmergencyNotificationPackage implements ReactPackage {
     List<NativeModule> modules = new ArrayList<>();
 
     modules.add(new EmergencyNotificationModule(reactContext));
+    modules.add(new DrawOnTopPermissionModule(reactContext));
 
     return modules;
   }

@@ -12,14 +12,6 @@ import com.saveme.notification.NotificationServiceState;
 
 public class EmergencyNotificationModule extends ReactContextBaseJavaModule {
     private static ReactApplicationContext reactContext;
-    private static Callback callback;
-
-    public static void triggerCallback(NotificationServiceState state) {
-        if (callback != null) {
-            Gson gson = new Gson();
-            callback.invoke(gson.toJson(state));
-        }
-    }
 
     EmergencyNotificationModule(ReactApplicationContext context) {
         super(context);
@@ -42,12 +34,10 @@ public class EmergencyNotificationModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void registerCallback(Callback cb) {
-        callback = cb;
-    }
-
-    @ReactMethod
-    public void refreshState() {
-      triggerCallback(EmergencyNotificationService.getState());
+    public void refreshState(Callback cb) {
+        if (cb != null) {
+            Gson gson = new Gson();
+            cb.invoke(gson.toJson(EmergencyNotificationService.getState()));
+        }
     }
 }

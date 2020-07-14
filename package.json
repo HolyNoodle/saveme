@@ -14,8 +14,11 @@
     "moment": "^2.27.0",
     "react": "16.13.1",
     "react-native": "0.63.0",
+    "react-native-audio-record": "^0.2.2",
     "react-native-fs": "^2.16.6",
-    "react-native-microphone-stream": "git://github.com/chadsmith/react-native-microphone-stream.git"
+    "react-native-permissions": "^2.1.5",
+    "react-native-sound": "^0.11.0",
+    "react-native-wakeup-screen": "0.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

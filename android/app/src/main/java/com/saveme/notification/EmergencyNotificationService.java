@@ -61,6 +61,15 @@ public class EmergencyNotificationService extends Service {
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.cancelAll();
 
+        if(state.session != null) {
+            try {
+                state.session.stop();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        state.session = null;
         state.started = false;
         state.mode = NotificationMode.INACTIVE;
     }

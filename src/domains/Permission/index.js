@@ -51,7 +51,7 @@ export const PermissionGate = ({permissions = [], children, force = false}) => {
     Promise.all(permissionPromises).then((allResults) => {
       setState(allResults);
     });
-  }, []);
+  }, [permissions]);
 
   if (filter(state, (s) => s !== RESULTS.GRANTED).length === 0) {
     return children;

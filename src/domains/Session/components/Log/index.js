@@ -21,18 +21,20 @@ const logComponentMap = {
 };
 
 const LogList = ({session}) => {
-  const {log} = session;
+  const {
+    logger: {logs},
+  } = session;
 
   return (
     <FlatList
-      data={log}
+      data={logs}
       renderItem={({item}) => {
-        const {date, type, ...rest} = item;
+        const {date, type, data} = item;
         const Component = logComponentMap[type];
 
         return (
           <LogEntry date={date}>
-            <Component {...rest} date={date} type={type} />
+            <Component {...data} date={date} type={type} />
           </LogEntry>
         );
       }}
@@ -40,4 +42,4 @@ const LogList = ({session}) => {
   );
 };
 
-export default LogList;
+export default React.memo(LogList);

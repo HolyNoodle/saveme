@@ -33,7 +33,7 @@ public class Session {
         logger = new Logger();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String dateString = df.format(new Date());
-        sessionName = Environment.getDataDirectory() + File.separator + dateString;
+        sessionName = parent.getFilesDir() + File.separator + dateString;
 
         File directory = new File(sessionName);
         directory.mkdirs();
@@ -68,10 +68,10 @@ public class Session {
         file.createNewFile();
 
         endDate = new Date();
-        
+
         FileOutputStream stream = new FileOutputStream(file);
         try {
-            stream.write(gson.toJson(EmergencyNotificationService.getState()).getBytes());
+            stream.write(gson.toJson(this).getBytes());
         } finally {
             stream.close();
         }

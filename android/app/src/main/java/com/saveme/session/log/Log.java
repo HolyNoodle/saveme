@@ -1,12 +1,17 @@
 package com.saveme.session.log;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Log {
+    @Expose
     private String type;
+    @Expose
     private Date date;
+    @Expose
     protected Dictionary<String, Object> data;
 
     public Log(String type) {

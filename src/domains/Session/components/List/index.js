@@ -24,7 +24,7 @@ const SessionList = () => {
     if (session !== playingSession) {
       const {folder} = session;
 
-      const audioFile = folder + '/audio-recording.wav';
+      const audioFile = folder + '/audio-record.mp4';
       const newAudio = new Sound(audioFile, '', (error) => {
         if (error) {
           console.log('failed to load the sound', error);
@@ -52,12 +52,16 @@ const SessionList = () => {
       return;
     }
 
+    console.log('read dir');
+
     RNFS.readDir(RNFS.DocumentDirectoryPath).then((folders) => {
+      console.log(folders);
       const promises = map(
         filter(folders, (f) => f.isDirectory()),
         async (folder) => {
           const filePath = folder.path + '/session.json';
           if (await RNFS.exists(filePath)) {
+            console.log(filePath);
             return JSON.parse(
               await RNFS.readFile(folder.path + '/session.json', 'utf8'),
             );

@@ -1,35 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, ScrollView, Button, Text} from 'react-native';
 
-import moment from 'moment';
-import * as RNFS from 'react-native-fs';
+import {View, Button, Text} from 'react-native';
+import {PERMISSIONS} from 'react-native-permissions';
 
 import EmergencyNotification from './native-modules/EmergencyNotification';
 import Session from './domains/Session';
 import SessionList from './domains/Session/components/List';
-import {PERMISSIONS} from 'react-native-permissions';
-import {PermissionGate, SpecialPermissionGate} from './domains/Permission';
+import {SpecialPermissionGate, PermissionGate} from './domains/Permission';
 
 const Entrypoint = ({}) => {
   const [serviceState, setServiceState] = useState();
-  const [session, setSession] = useState();
 
-  const {started = false, mode = 'INACTIVE'} = serviceState || {};
-
-  const handleChangeSession = (newSession) => {
-    console.log('new session', newSession);
-    const {folder} = newSession;
-
-    if (folder) {
-      RNFS.writeFile(
-        folder + '/session.json',
-        JSON.stringify(newSession),
-        'utf8',
-      );
-    }
-
-    setSession(newSession);
-  };
+  const {started = false, mode = 'INACTIVE', session} = serviceState || {};
 
   useEffect(() => {
     const callback = (json) => setServiceState(JSON.parse(json));
@@ -43,23 +25,8 @@ const Entrypoint = ({}) => {
     return () => clearInterval(interval);
   }, [setServiceState]);
 
-  useEffect(() => {
-    if (mode === 'HELP' || mode === 'EMERGENCY') {
-      setSession({
-        startDate: moment(),
-        endDate: undefined,
-        folder: `${RNFS.DocumentDirectoryPath}/${moment().format(
-          'YYYYMMDDHHmm',
-        )}`,
-        log: [],
-        actions: [],
-      });
-    } else {
-      setSession(undefined);
-    }
-  }, [mode]);
-
   const handleStart = () => {
+    console.log('start')
     EmergencyNotification.startService();
   };
   const handleStop = () => {
@@ -69,12 +36,22 @@ const Entrypoint = ({}) => {
   return (
     <View>
       <Text>mode: {mode}</Text>
-      {session && <Session onChange={handleChangeSession} session={session} />}
+      {session && <Session session={session} />}
       {!session && <SessionList />}
       {!started ? (
-        <SpecialPermissionGate>
-          <Button onPress={handleStart} title={'Start'} />
-        </SpecialPermissionGate>
+        <PermissionGate
+          permissions={[
+            PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+            PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+            PERMISSIONS.ANDROID.RECORD_AUDIO,
+            PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+            PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+          ]}
+          force={true}>
+          <SpecialPermissionGate>
+            <Button onPress={handleStart} title={'Start'} />
+          </SpecialPermissionGate>
+        </PermissionGate>
       ) : (
         <Button onPress={handleStop} title={'Stop'} />
       )}

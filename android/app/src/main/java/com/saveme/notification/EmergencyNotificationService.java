@@ -14,7 +14,10 @@ import androidx.core.app.NotificationCompat;
 
 import com.saveme.MainActivity;
 import com.saveme.R;
+import com.saveme.session.Session;
 import com.saveme.volume.EmergencyTriggerService;
+
+import java.io.IOException;
 
 public class EmergencyNotificationService extends Service {
     private static final int SERVICE_NOTIFICATION_ID = 3658794;
@@ -101,9 +104,22 @@ public class EmergencyNotificationService extends Service {
             }
 
             if (state.mode == NotificationMode.EMERGENCY || state.mode == NotificationMode.HELP) {
+                state.session = new Session();
+                state.session.start(this);
+
                 Intent newIntent = new Intent(getApplicationContext(), MainActivity.class);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(newIntent);
+            }
+            else {
+                if(state.session != null) {
+                    try {
+                        state.session.stop();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    state.session = null;
+                }
             }
 
             Notification notification = createNotificationObject()
@@ -114,6 +130,15 @@ public class EmergencyNotificationService extends Service {
             updateNotification(notification);
         } else {
             state.mode = NotificationMode.LISTENING;
+
+            if(state.session != null) {
+                try {
+                    state.session.stop();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                state.session = null;
+            }
 
             notification = createNotificationObject()
                     .setContentTitle(state.mode.toString() + " mode")

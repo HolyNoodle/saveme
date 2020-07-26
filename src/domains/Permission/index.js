@@ -4,17 +4,18 @@ import {check, request, RESULTS} from 'react-native-permissions';
 import {Button, Text} from 'react-native';
 
 import DrawOnTopPermissionModule from '../../native-modules/DrawOnTopPermissionModule';
+import {map, filter} from 'lodash';
 
 const PermissionButton = ({permission, onRequest}) => (
   <Button
     onPress={() => {
       request(permission).then(onRequest);
     }}
-    title={'Request permission'}
+    title={'Request permission ' + permission}
   />
 );
 
-export const PermissionSetting = ({permission, onChange}) => {
+export const PermissionSetting = ({permission}) => {
   const [state, setState] = useState();
   useEffect(() => {
     check(permission).then((result) => {
@@ -24,7 +25,6 @@ export const PermissionSetting = ({permission, onChange}) => {
 
   switch (state) {
     case RESULTS.UNAVAILABLE:
-      console.log(permission, 'not available');
       return <Text>Not available</Text>;
     case RESULTS.DENIED:
       return (
@@ -36,26 +36,37 @@ export const PermissionSetting = ({permission, onChange}) => {
     case RESULTS.GRANTED:
       return <Text>OK</Text>;
     case RESULTS.BLOCKED:
-      console.log(permission, 'blocked');
       return <Text>Blocked</Text>;
   }
 
   return <Text>Checking permission</Text>;
 };
 
-export const PermissionGate = ({permission, children, force = false}) => {
+export const PermissionGate = ({permissions = [], children, force = false}) => {
   const [state, setState] = useState();
-  useEffect(() => {
-    check(permission).then((result) => {
-      setState(result);
-    });
-  });
 
-  if (state === RESULTS.GRANTED) {
+  useEffect(() => {
+    const permissionPromises = permissions.map(check);
+
+    Promise.all(permissionPromises).then((allResults) => {
+      setState(allResults);
+    });
+  }, []);
+
+  if (filter(state, (s) => s !== RESULTS.GRANTED).length === 0) {
     return children;
   }
 
-  return force && <PermissionSetting permission={permission} />;
+  return (
+    force &&
+    map(permissions, (permission, index) => {
+      if (state === RESULTS.GRANTED) {
+        return null;
+      }
+
+      return <PermissionSetting key={permission} permission={permission} />;
+    })
+  );
 };
 
 export const SpecialPermissionGate = ({children}) => {

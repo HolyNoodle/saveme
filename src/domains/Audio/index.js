@@ -4,9 +4,6 @@ import React, {useEffect, useRef, useContext} from 'react';
 // Views
 import {Text} from 'react-native';
 
-// Third party
-import moment from 'moment';
-
 // Native modules
 import AudioRecord from 'react-native-audio-record';
 import {PERMISSIONS} from 'react-native-permissions';
@@ -19,7 +16,7 @@ import {PermissionGate} from '../Permission';
 import {SessionContext} from '../../contexts';
 
 const AudioRecorder = ({record = false, fileName}) => {
-  const {session, setSession} = useContext(SessionContext);
+  const {pushLog} = useContext(SessionContext);
   const started = useRef(false);
 
   useEffect(() => {
@@ -33,28 +30,17 @@ const AudioRecorder = ({record = false, fileName}) => {
       });
 
       AudioRecord.start();
-      setSession({
-        ...session,
-        log: [
-          ...session.log,
-          {type: 'event', date: moment(), value: 'START_RECORDING'},
-        ],
-      });
+      pushLog({type: 'event', value: 'START_RECORDING'});
       started.current = true;
     }
 
     if (!record && started) {
       AudioRecord.stop();
-      setSession({
-        ...session,
-        log: [
-          ...session.log,
-          {type: 'event', date: moment(), value: 'START_RECORDING'},
-        ],
-      });
+
+      pushLog({type: 'event', value: 'STOP_RECORDING'});
       started.current = false;
     }
-  }, [record, fileName]);
+  }, [record, pushLog, fileName]);
 
   useEffect(() => {
     return () => {

@@ -18,6 +18,8 @@ target 'SaveMe' do
 
   pod 'RNSound', :path => '../node_modules/react-native-sound'
 
+  pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
+
   target 'SaveMeTests' do
     inherit! :complete
     # Pods for testing

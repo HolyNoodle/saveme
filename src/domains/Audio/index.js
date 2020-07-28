@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useContext} from 'react';
 
 // Views
-import {Text} from 'react-native';
+import {Container, Switch, Text} from 'native-base';
 
 // Native modules
 import AudioRecord from 'react-native-audio-record';
@@ -54,10 +54,14 @@ const AudioRecorder = ({record = false, fileName}) => {
   return record && started && <Text>Audio recording</Text>;
 };
 
-const ProtectedAudioRecorder = (props) => (
-  <PermissionGate permission={PERMISSIONS.ANDROID.RECORD_AUDIO} force={true}>
+export const ProtectedAudioRecorder = (props) => (
+  <PermissionGate permission={PERMISSIONS.ANDROID.RECORD_AUDIO}>
     <AudioRecorder {...props} />
   </PermissionGate>
 );
 
-export default ProtectedAudioRecorder;
+export const AudioSettings = ({enabled}) => (
+  <Container>
+    <Switch value={enabled} />
+  </Container>
+);

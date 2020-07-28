@@ -1,0 +1,7 @@
+{
+    "permission-request": "Nous avons besoin de la permission \"{{permisson}}\"",
+    "enabled": "Activé",
+    "disabled": "Désactivé",
+
+    "long_date_format": "DD/MM/YYYY HH:mm"
+}

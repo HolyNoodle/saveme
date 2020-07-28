@@ -10,9 +10,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "i18next": "^19.6.3",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
+    "native-base": "^2.13.13",
     "react": "16.13.1",
+    "react-i18next": "^11.7.0",
     "react-native": "0.63.0",
     "react-native-fs": "^2.16.6",
     "react-native-permissions": "^2.1.5",

@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 
 public class Log {
     @Expose
@@ -12,23 +13,23 @@ public class Log {
     @Expose
     private Date date;
     @Expose
-    protected Dictionary<String, Object> data;
+    protected LinkedHashMap<String, Object> data;
 
     public Log(String type) {
         this.type = type;
         this.date = new Date();
-        this.data = new Hashtable<>();
+        this.data = new LinkedHashMap<>();
     }
 
     public String getType() {
         return type;
     }
 
-    public Dictionary<String, Object> getData() {
+    public LinkedHashMap<String, Object> getData() {
         return data;
     }
 
-    public void setData(Dictionary<String, Object> data) {
+    public void setData(LinkedHashMap<String, Object> data) {
         this.data = data;
     }
 

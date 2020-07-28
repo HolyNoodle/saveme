@@ -3,11 +3,9 @@ package com.saveme.session;
 import android.app.Service;
 import android.content.Context;
 import android.location.LocationManager;
-import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
-import com.saveme.notification.EmergencyNotificationService;
 import com.saveme.session.log.ErrorLog;
 
 import java.io.File;
@@ -63,7 +61,6 @@ public class Session {
             logger.pushLog(new ErrorLog("SESSION_STOP", ex));
         }
 
-        Gson gson = new Gson();
         File file = new File(sessionName, "session.json");
         file.createNewFile();
 
@@ -71,6 +68,7 @@ public class Session {
 
         FileOutputStream stream = new FileOutputStream(file);
         try {
+            Gson gson = new Gson();
             stream.write(gson.toJson(this).getBytes());
         } finally {
             stream.close();

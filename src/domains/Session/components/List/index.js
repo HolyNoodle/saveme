@@ -1,15 +1,28 @@
 import React, {useState, useEffect} from 'react';
 
 import * as RNFS from 'react-native-fs';
-import {FlatList, Text, Button} from 'react-native';
+import {} from 'react-native';
 import Sound from 'react-native-sound';
 
 import map from 'lodash/map';
 import filter from 'lodash/filter';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
+import {
+  List,
+  Container,
+  Content,
+  Text,
+  Button,
+  Icon,
+  ListItem,
+  Right,
+} from 'native-base';
+import {useTranslation} from 'react-i18next';
+import {convertJavaDateToMoment} from '../../../../utils';
 
 const SessionList = () => {
+  const {t} = useTranslation();
   const [sessions, setSessions] = useState();
   const [playingSession, setPlayingSession] = useState();
   const [audio, setAudio] = useState();
@@ -81,22 +94,36 @@ const SessionList = () => {
   }, [sessions]);
 
   return (
-    <FlatList
-      data={sessions}
-      renderItem={({item = {}}) => {
-        const {startDate, folder} = item;
+    <List>
+      {map(sessions, (item) => {
+        const {startDate} = item;
         return (
-          <Text>
-            {moment(startDate).format('DD/MM/YYYY HH:mm')} -&gt; {folder}
+          <ListItem key={startDate}>
+            <Text>
+              {convertJavaDateToMoment(startDate).format(
+                t('common:long_date_format'),
+              )}
+            </Text>
             <Button
-              title={playingSession === item ? 'stop' : 'play'}
               onPress={() => handlePlay(item)}
-            />
-            <Button title={'delete'} onPress={() => handleDeleteFolder(item)} />
-          </Text>
+              rounded
+              transparent
+              icon
+              primary>
+              <Icon name={playingSession === item ? 'play' : 'stop'} />
+            </Button>
+            <Button
+              onPress={() => handleDeleteFolder(item)}
+              rounded
+              icon
+              transparent
+              danger>
+              <Icon name={'trash-outline'} />
+            </Button>
+          </ListItem>
         );
-      }}
-    />
+      })}
+    </List>
   );
 };
 

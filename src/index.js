@@ -10,6 +10,7 @@ import {
   Content,
   FooterTab,
   Header,
+  Drawer,
 } from 'native-base';
 import {useTranslation} from 'react-i18next';
 import {PERMISSIONS} from 'react-native-permissions';
@@ -26,7 +27,7 @@ const Entrypoint = ({}) => {
   const {t} = useTranslation();
   const [serviceState, setServiceState] = useState();
 
-  const {started = false, mode = 'INACTIVE', session} = serviceState || {};
+  const {started = false, session} = serviceState || {};
 
   useEffect(() => {
     const callback = (json) => setServiceState(JSON.parse(json));
@@ -49,9 +50,7 @@ const Entrypoint = ({}) => {
 
   return (
     <Container>
-      <Header />
       <Content>
-        <Text>mode: {mode}</Text>
         {session && <Session session={session} />}
         {!session && <SessionList />}
       </Content>

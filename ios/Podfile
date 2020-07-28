@@ -20,6 +20,8 @@ target 'SaveMe' do
 
   pod 'react-native-geolocation-service', :path => '../node_modules/react-native-geolocation-service'
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'SaveMeTests' do
     inherit! :complete
     # Pods for testing

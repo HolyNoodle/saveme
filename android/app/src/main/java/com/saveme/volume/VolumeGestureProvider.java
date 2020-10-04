@@ -1,5 +1,8 @@
 package com.saveme.volume;
 
+import android.content.Context;
+import android.media.AudioManager;
+
 import androidx.media.VolumeProviderCompat;
 
 import com.saveme.notification.NotificationMode;
@@ -10,16 +13,23 @@ import java.util.List;
 
 //this will only work on Lollipop and up, see https://code.google.com/p/android/issues/detail?id=224134
 public class VolumeGestureProvider extends VolumeProviderCompat {
-    public static void setCallbackInterface(VolumeGestureProviderCallbackInterface callbackInterface) {
-        VolumeGestureProvider.callbackInterface = callbackInterface;
+    public static void setGestureCallbackInterface(VolumeGestureProviderCallbackInterface callbackInterface) {
+        VolumeGestureProvider.gestureCallbackInterface = callbackInterface;
     }
-
+    public static void setVolumeAdjustmentCallbackInterface(VolumeAdjustmentCallbackInterface callbackInterface) {
+        VolumeGestureProvider.volumeAdjustmentCallbackInterface = callbackInterface;
+    }
     public interface VolumeGestureProviderCallbackInterface {
         void onGesture(String notificationMode);
     }
 
+    public interface VolumeAdjustmentCallbackInterface {
+        void onAdjustVolume(int value);
+    }
+
     private static float gestureTiming = 5000;
-    private static VolumeGestureProviderCallbackInterface callbackInterface;
+    private static VolumeGestureProviderCallbackInterface gestureCallbackInterface;
+    private static VolumeAdjustmentCallbackInterface volumeAdjustmentCallbackInterface;
 
     private static List<Integer> directions = new ArrayList<>();
     private static List<Date> timings = new ArrayList<>();
@@ -67,9 +77,11 @@ public class VolumeGestureProvider extends VolumeProviderCompat {
     }
 
     private static void triggerEmergencyIntent(VolumeTriggerPattern pattern) {
-        callbackInterface.onGesture(pattern.getResult().toString());
+        gestureCallbackInterface.onGesture(pattern.getResult().toString());
     }
-
+    private static void triggerVolumeAdjustment(int value) {
+        volumeAdjustmentCallbackInterface.onAdjustVolume(value);
+    }
     @Override
     public void onAdjustVolume(int direction) {
         super.onAdjustVolume(direction);
@@ -86,6 +98,7 @@ public class VolumeGestureProvider extends VolumeProviderCompat {
             }
         }
 
+        triggerVolumeAdjustment(direction);
         purgeMemory();
     }
 }

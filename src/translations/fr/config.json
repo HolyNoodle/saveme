@@ -2,5 +2,6 @@
     "recorders": "Capteurs de données",
     "isGoelocationRecorderEnabled": "Position géographique",
     "isMicrophoneRecorderEnabled": "Microphone",
-    "isDevicesRecorderEnabled": "Bluetooth et wifi"
+    "isDevicesRecorderEnabled": "Bluetooth et wifi",
+    "action-com.saveme.session.actors.SMSActor": "SMS"
 }

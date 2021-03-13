@@ -29,10 +29,19 @@ const Entrypoint = ({ }) => {
   const { t } = useTranslation();
   const [serviceState, setServiceState] = useState();
 
-  const { started = false } = serviceState || {};
+  const { started = false, mode } = serviceState || {};
 
   useEffect(() => {
-    const callback = (json) => setServiceState(JSON.parse(json));
+    const callback = (json) => {
+      const newServiceState = JSON.parse(json);
+      setServiceState(serviceState => {
+        if (serviceState.started != newServiceState.started || serviceState.mode != newServiceState.mode || newServiceState.session) {
+          return newServiceState;
+        }
+
+        return serviceState
+      });
+    };
 
     const interval = setInterval(() => {
       EmergencyNotification.refreshState(callback);

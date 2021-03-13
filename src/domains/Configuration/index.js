@@ -5,14 +5,14 @@ import {
   Container,
   Content,
   Text,
-  Button,
   Switch,
   Icon,
-  View,
-  Toast
+  View
 } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import * as RNFS from 'react-native-fs';
+import EntityList from '../../components/EntityList';
+import TimelineItem from './components/TimelineItem';
 
 const Config = ({ }) => {
   const { t } = useTranslation();
@@ -72,6 +72,12 @@ const Config = ({ }) => {
               onValueChange={handleFieldUpdate('isDevicesRecorderEnabled')}
             />
           </Text>
+          <EntityList 
+            values={config.timeline} 
+            onChange={handleFieldUpdate('timeline')} 
+            translationSuffix={'actor'}
+            component={TimelineItem}
+          />
         </View>
       )}
     </View>

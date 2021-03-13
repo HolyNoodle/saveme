@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import * as RNFS from 'react-native-fs';
-import {} from 'react-native';
+import { } from 'react-native';
 import Sound from 'react-native-sound';
 
 import map from 'lodash/map';
@@ -10,19 +10,16 @@ import sortBy from 'lodash/sortBy';
 import moment from 'moment';
 import {
   List,
-  Container,
-  Content,
   Text,
   Button,
   Icon,
-  ListItem,
-  Right,
+  ListItem
 } from 'native-base';
-import {useTranslation} from 'react-i18next';
-import {convertJavaDateToMoment} from '../../../../utils';
+import { useTranslation } from 'react-i18next';
+import { convertJavaDateToMoment } from '../../../../utils';
 
 const SessionList = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [sessions, setSessions] = useState();
   const [playingSession, setPlayingSession] = useState();
   const [audio, setAudio] = useState();
@@ -35,7 +32,7 @@ const SessionList = () => {
     }
 
     if (session !== playingSession) {
-      const {sessionName} = session;
+      const { sessionName } = session;
 
       const audioFile = sessionName + '/audio-record.mp4';
       const newAudio = new Sound(audioFile, '', (error) => {
@@ -96,7 +93,7 @@ const SessionList = () => {
   return (
     <List>
       {map(sessions, (item) => {
-        const {startDate} = item;
+        const { startDate } = item;
         return (
           <ListItem key={startDate}>
             <Text>

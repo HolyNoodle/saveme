@@ -1,8 +1,9 @@
-package com.saveme.session;
+package com.saveme.session.recorders;
 
 import android.media.MediaRecorder;
-import android.util.Log;
 
+import com.saveme.session.Logger;
+import com.saveme.session.configuration.Config;
 import com.saveme.session.log.ErrorLog;
 import com.saveme.session.log.EventLog;
 
@@ -44,5 +45,10 @@ public class MicrophoneRecorder implements IRecorder {
         recorder.release();
         recorder = null;
         fileName = null;
+    }
+
+    @Override
+    public boolean isEnabled(Config config) {
+        return config.isMicrophoneRecorderEnabled();
     }
 }

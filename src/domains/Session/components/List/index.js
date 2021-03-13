@@ -65,9 +65,9 @@ const SessionList = () => {
       return;
     }
 
-    RNFS.readDir(RNFS.DocumentDirectoryPath).then((folders) => {
-      const promises = map(
-        filter(folders, (f) => f.isDirectory()),
+    RNFS.readDir(RNFS.DocumentDirectoryPath).then((files) => {
+      const folders = filter(files, (f) => f.isDirectory());
+      const promises = map(folders,
         async (folder) => {
           const filePath = folder.path + '/session.json';
           if (await RNFS.exists(filePath)) {

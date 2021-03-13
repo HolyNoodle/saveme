@@ -1,4 +1,4 @@
-package com.saveme.session;
+package com.saveme.session.recorders;
 
 import android.annotation.SuppressLint;
 import android.location.Criteria;
@@ -7,6 +7,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import com.saveme.session.Logger;
+import com.saveme.session.configuration.Config;
 import com.saveme.session.log.EventLog;
 import com.saveme.session.log.GeolocationLog;
 
@@ -63,5 +65,10 @@ public class GeolocationRecorder implements IRecorder, LocationListener {
     public void stop() {
         logger.pushLog(new EventLog("GEOLOCATION_RECORDER_STOP"));
         locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public boolean isEnabled(Config config) {
+        return config.isGoelocationRecorderEnabled();
     }
 }

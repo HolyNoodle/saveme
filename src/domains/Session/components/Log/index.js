@@ -13,11 +13,12 @@ const Geolocation = ({location}) => (
   <Text>GEOLOCATION : {JSON.stringify(location)}</Text>
 );
 const Error = ({ex}) => <Text>ERROR : {JSON.stringify(ex)}</Text>;
-
+const SMS = ({message, number, event}) => <Text>SMS: {event} to {number}: {message}</Text>
 const logComponentMap = {
   event: Event,
   geolocation: Geolocation,
   error: Error,
+  SMS
 };
 
 const LogList = ({session}) => {

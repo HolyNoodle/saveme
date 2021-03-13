@@ -1,5 +1,5 @@
 // React
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Third party
 import {
@@ -12,8 +12,8 @@ import {
   Header,
   Drawer,
 } from 'native-base';
-import {useTranslation} from 'react-i18next';
-import {PERMISSIONS} from 'react-native-permissions';
+import { useTranslation } from 'react-i18next';
+import { PERMISSIONS } from 'react-native-permissions';
 
 // Services
 import EmergencyNotification from './native-modules/EmergencyNotification';
@@ -21,13 +21,15 @@ import EmergencyNotification from './native-modules/EmergencyNotification';
 // Components
 import Session from './domains/Session';
 import SessionList from './domains/Session/components/List';
-import {SpecialPermissionGate, PermissionGate} from './domains/Permission';
+import { SpecialPermissionGate, PermissionGate } from './domains/Permission';
+import { NativeRouter } from 'react-router-native';
+import { MainRouter, Menu } from './components/MainRouter';
 
-const Entrypoint = ({}) => {
-  const {t} = useTranslation();
+const Entrypoint = ({ }) => {
+  const { t } = useTranslation();
   const [serviceState, setServiceState] = useState();
 
-  const {started = false, session} = serviceState || {};
+  const { started = false } = serviceState || {};
 
   useEffect(() => {
     const callback = (json) => setServiceState(JSON.parse(json));
@@ -49,37 +51,39 @@ const Entrypoint = ({}) => {
   };
 
   return (
-    <Container>
-      <Content>
-        {session && <Session session={session} />}
-        {!session && <SessionList />}
-      </Content>
-      <Footer>
-        <FooterTab>
-          {!started ? (
-            <PermissionGate
-              permissions={[
-                PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-                PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-                PERMISSIONS.ANDROID.RECORD_AUDIO,
-                PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-                PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-              ]}
-              force={true}>
-              <SpecialPermissionGate>
-                <Button onPress={handleStart} primary full>
-                  <Text>{t('service:start')}</Text>
-                </Button>
-              </SpecialPermissionGate>
-            </PermissionGate>
-          ) : (
-            <Button onPress={handleStop} danger full>
-              <Text>{t('service:stop')}</Text>
-            </Button>
-          )}
-        </FooterTab>
-      </Footer>
-    </Container>
+    <NativeRouter>
+      <Container>
+        <Content>
+          <Menu serviceState={serviceState} />
+          <MainRouter serviceState={serviceState} />
+        </Content>
+        <Footer>
+          <FooterTab>
+            {!started ? (
+              <PermissionGate
+                permissions={[
+                  PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+                  PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+                  PERMISSIONS.ANDROID.RECORD_AUDIO,
+                  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+                  PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+                ]}
+                force={true}>
+                <SpecialPermissionGate>
+                  <Button onPress={handleStart} primary full>
+                    <Text>{t('service:start')}</Text>
+                  </Button>
+                </SpecialPermissionGate>
+              </PermissionGate>
+            ) : (
+              <Button onPress={handleStop} danger full>
+                <Text>{t('service:stop')}</Text>
+              </Button>
+            )}
+          </FooterTab>
+        </Footer>
+      </Container>
+    </NativeRouter>
   );
 };
 

@@ -12,11 +12,18 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
+import com.facebook.flipper.plugins.databases.ObjectMapper;
+import com.google.gson.Gson;
 import com.saveme.MainActivity;
 import com.saveme.R;
 import com.saveme.session.Session;
+import com.saveme.session.configuration.Config;
 import com.saveme.volume.EmergencyTriggerService;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class EmergencyNotificationService extends Service {
@@ -113,7 +120,9 @@ public class EmergencyNotificationService extends Service {
             }
 
             if (state.mode == NotificationMode.EMERGENCY || state.mode == NotificationMode.HELP) {
-                state.session = new Session();
+                Config config = this.getConfig();
+
+                state.session = new Session(config);
                 state.session.start(this);
 
                 Intent newIntent = new Intent(getApplicationContext(), MainActivity.class);
@@ -161,6 +170,28 @@ public class EmergencyNotificationService extends Service {
         state.started = true;
 
         return START_STICKY;
+    }
+
+    private Config getConfig() {
+        String configFileName = this.getFilesDir() + File.separator + "config.json";
+        Config config = new Config();
+
+        try {
+            File file = new File(configFileName);
+            FileInputStream fis = new FileInputStream(configFileName);
+            byte[] data = new byte[(int) file.length()];
+
+            fis.read(data);
+            fis.close();
+            String str = new String(data, "UTF-8");
+
+            Gson gson = new Gson();
+            config = gson.fromJson(str, Config.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return config;
     }
 
 }

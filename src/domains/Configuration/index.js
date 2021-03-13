@@ -22,13 +22,13 @@ const Config = ({ }) => {
   useEffect(() => {
     if (!init) {
       RNFS.readFile(RNFS.DocumentDirectoryPath + "/config.json")
-      .then(file => {
-        setConfig(JSON.parse(file));
-      })
-      .catch(() => setConfig({}))
-      .finally(() => {
-        setInit(true);
-      });
+        .then(file => {
+          setConfig(JSON.parse(file));
+        })
+        .catch(() => setConfig({}))
+        .finally(() => {
+          setInit(true);
+        });
     }
   }, [init]);
 
@@ -49,13 +49,30 @@ const Config = ({ }) => {
         </Text>
       )}
       {init && (
-        <Text>
-          {t("config:isMicrophoneRecorderEnabled")}
-          <Switch
-            value={config.isMicrophoneRecorderEnabled}
-            onValueChange={handleFieldUpdate('isMicrophoneRecorderEnabled')}
-          />
-        </Text>
+        <View>
+          <Text>{t("config:recorders")}</Text>
+          <Text>
+            {t("config:isMicrophoneRecorderEnabled")}
+            <Switch
+              value={config.isMicrophoneRecorderEnabled}
+              onValueChange={handleFieldUpdate('isMicrophoneRecorderEnabled')}
+            />
+          </Text>
+          <Text>
+            {t("config:isGoelocationRecorderEnabled")}
+            <Switch
+              value={config.isGoelocationRecorderEnabled}
+              onValueChange={handleFieldUpdate('isGoelocationRecorderEnabled')}
+            />
+          </Text>
+          <Text>
+            {t("config:isDevicesRecorderEnabled")}
+            <Switch
+              value={config.isDevicesRecorderEnabled}
+              onValueChange={handleFieldUpdate('isDevicesRecorderEnabled')}
+            />
+          </Text>
+        </View>
       )}
     </View>
   );

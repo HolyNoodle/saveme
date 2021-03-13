@@ -1,0 +1,6 @@
+{
+    "recorders": "Capteurs de données",
+    "isGoelocationRecorderEnabled": "Position géographique",
+    "isMicrophoneRecorderEnabled": "Microphone",
+    "isDevicesRecorderEnabled": "Bluetooth et wifi"
+}

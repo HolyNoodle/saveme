@@ -15,8 +15,8 @@ const TimelineItem = ({ edit, value = {}, onChange }) => {
   const { t } = useTranslation();
   const { triggerTime = 30 } = value || {};
 
-  const handleFieldChange = (field) => (value) => {
-    onChange({ ...value, [field]: value });
+  const handleFieldChange = (field) => (newValue) => {
+    onChange({ ...value, [field]: newValue });
   };
   const handleActorChange = (actor) => {
     onChange({ ...value, ...actor });

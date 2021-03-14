@@ -1,4 +1,6 @@
 {
     "start": "Lancer le service",
-    "stop": "Arrêter le service"
+    "stop": "Arrêter le service",
+    "geolocation": "Position",
+    "geolocation-log": "longitude: {{longitude}}, latitude: {{latitude}}, altitude: {{altitude}}, vitesse: {{speed}}"
 }

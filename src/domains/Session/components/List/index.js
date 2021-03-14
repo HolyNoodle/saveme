@@ -1,59 +1,27 @@
-import React, { useState, useEffect } from 'react';
+// React
+import React, { useState, useEffect } from "react";
 
-import * as RNFS from 'react-native-fs';
-import Sound from 'react-native-sound';
+// Third party
+import map from "lodash/map";
+import sortBy from "lodash/sortBy";
+import { List, Text, ListItem } from "native-base";
+import { useTranslation } from "react-i18next";
+import { createStackNavigator } from "@react-navigation/stack";
 
-import map from 'lodash/map';
-import filter from 'lodash/filter';
-import sortBy from 'lodash/sortBy';
-import moment from 'moment';
-import {
-  List,
-  Text,
-  Button,
-  Icon,
-  ListItem
-} from 'native-base';
-import { useTranslation } from 'react-i18next';
-import { convertJavaDateToMoment } from '../../../../utils';
+// Utils
+import { convertJavaDateToMoment } from "../../../../utils";
+import { getSessionList, removeSession } from "../../utils";
+import { SessionScreen } from "../../index";
 
-const SessionList = () => {
+const SessionList = ({ navigation }) => {
   const { t } = useTranslation();
   const [sessions, setSessions] = useState();
-  const [playingSession, setPlayingSession] = useState();
-  const [audio, setAudio] = useState();
-
-  const handlePlay = (session) => {
-    if (audio) {
-      audio.stop();
-      setPlayingSession();
-      setAudio();
-    }
-
-    if (session !== playingSession) {
-      const { sessionName } = session;
-
-      const audioFile = sessionName + '/audio-record.mp4';
-      const newAudio = new Sound(audioFile, '', (error) => {
-        if (error) {
-          console.log('failed to load the sound', error);
-          return;
-        }
-
-        setPlayingSession(session);
-        setAudio(newAudio);
-
-        newAudio.play(() => {
-          setPlayingSession();
-          setAudio();
-        });
-      });
-    }
-  };
 
   const handleDeleteFolder = (session) => {
-    RNFS.unlink(session.sessionName);
-    setSessions();
+    removeSession(session).then(() => setSessions());
+  };
+  const handleOpenSession = (session) => {
+    navigation.navigate("sessions", { screen: "details", params: { session } });
   };
 
   useEffect(() => {
@@ -61,31 +29,13 @@ const SessionList = () => {
       return;
     }
 
-    RNFS.readDir(RNFS.DocumentDirectoryPath).then((files) => {
-      const folders = filter(files, (f) => f.isDirectory());
-      const promises = map(folders,
-        async (folder) => {
-          const filePath = folder.path + '/session.json';
-          if (await RNFS.exists(filePath)) {
-            return JSON.parse(
-              await RNFS.readFile(folder.path + '/session.json', 'utf8'),
-            );
-          }
+    getSessionList().then((sessions) => {
+      const normalizedSessions = sessions.map((s) => ({
+        ...s,
+        startDate: convertJavaDateToMoment(s.startDate),
+      }));
 
-          return null;
-        },
-      );
-
-      Promise.all(promises).then((listSessions) => {
-        const filteredSessions = filter(listSessions, (s) => !!s);
-        const processedSessions = map(filteredSessions, (s, index) => ({
-          ...s,
-          key: index,
-          startDate: moment(s.startDate),
-        }));
-
-        setSessions(sortBy(processedSessions, 'startDate').reverse());
-      });
+      setSessions(sortBy(normalizedSessions, "startDate").reverse());
     });
   }, [sessions]);
 
@@ -94,28 +44,12 @@ const SessionList = () => {
       {map(sessions, (item) => {
         const { startDate } = item;
         return (
-          <ListItem key={startDate}>
+          <ListItem key={startDate} onPress={() => handleOpenSession(item)}>
             <Text>
-              {convertJavaDateToMoment(startDate).format(
-                t('common:long_date_format'),
+              {startDate.format(
+                t("common:long_date_format")
               )}
             </Text>
-            <Button
-              onPress={() => handlePlay(item)}
-              rounded
-              transparent
-              icon
-              primary>
-              <Icon name={playingSession === item ? 'play' : 'stop'} />
-            </Button>
-            <Button
-              onPress={() => handleDeleteFolder(item)}
-              rounded
-              icon
-              transparent
-              danger>
-              <Icon name={'trash-outline'} />
-            </Button>
           </ListItem>
         );
       })}
@@ -123,4 +57,13 @@ const SessionList = () => {
   );
 };
 
-export default SessionList;
+const Stack = createStackNavigator();
+
+const StackNavigationSessionList = () => (
+  <Stack.Navigator>
+    <Stack.Screen name={"list"} component={SessionList} />
+    <Stack.Screen name={"details"} component={SessionScreen} />
+  </Stack.Navigator>
+);
+
+export default StackNavigationSessionList;

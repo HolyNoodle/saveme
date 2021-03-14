@@ -1,27 +1,30 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {View, Text} from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text } from "react-native";
 
-import moment from 'moment';
+import moment from "moment";
 
-const Clock = ({startDate}) => {
-  const [now, setNow] = useState(false);
+const Clock = ({ startDate, endDate }) => {
+  const [, setNow] = useState(false);
   const intervalId = useRef();
 
-  useEffect(() => {
-    if (!intervalId.current) {
-      intervalId.current = setInterval(function () {
-        setNow(!!now);
-      }, 500);
-    }
-
-    return () => {
-      if (intervalId.current) {
-        clearInterval(intervalId.current);
+  if (!endDate) {
+    useEffect(() => {
+      if (!intervalId.current) {
+        intervalId.current = setInterval(function () {
+          setNow((now) => !!now);
+        }, 100);
       }
-    };
-  }, [now, setNow]);
 
-  const diff = moment().diff(startDate);
+      return () => {
+        if (intervalId.current) {
+          clearInterval(intervalId.current);
+        }
+      };
+    }, [setNow]);
+  }
+
+  const timeAnchor = endDate || moment();
+  const diff = timeAnchor.diff(startDate);
   const seconds = Math.ceil((diff / 1000) % 60);
   const minutes = Math.floor((diff / 1000 / 60) % 60);
   const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
@@ -29,9 +32,13 @@ const Clock = ({startDate}) => {
   return (
     <View>
       <Text>
-        {hours.toString().padStart(2, '0')}:
-        {minutes.toString().padStart(2, '0')}:
-        {seconds.toString().padStart(2, '0')}
+        {startDate.format('LLLL')}
+        {endDate && endDate.format('LLL')}
+      </Text>
+      <Text>
+        {hours.toString().padStart(2, "0")}:
+        {minutes.toString().padStart(2, "0")}:
+        {seconds.toString().padStart(2, "0")}
       </Text>
     </View>
   );

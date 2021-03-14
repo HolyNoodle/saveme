@@ -18,7 +18,7 @@ const Entrypoint = ({ }) => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName={"parameters"}>
+      <Tab.Navigator initialRouteName={"home"}>
         <Tab.Screen name="home" component={Service} options={{ title: t('nav:home') }} />
         <Tab.Screen name="sessions" component={SessionList} options={{ title: t('nav:sessions') }} />
         <Tab.Screen name="parameters" component={Config} options={{ title: t('nav:config') }} />

@@ -7,6 +7,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.saveme.notification.EmergencyNotificationService;
 import com.saveme.notification.NotificationServiceState;
 
@@ -36,7 +37,7 @@ public class EmergencyNotificationModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void refreshState(Callback cb) {
         if (cb != null) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             cb.invoke(gson.toJson(EmergencyNotificationService.getState()));
         }
     }

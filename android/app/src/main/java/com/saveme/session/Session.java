@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.LocationManager;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.saveme.session.actors.IActor;
 import com.saveme.session.configuration.Config;
@@ -72,7 +73,7 @@ public class Session {
         file.createNewFile();
         FileOutputStream stream = new FileOutputStream(file);
         try {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
             stream.write(gson.toJson(this).getBytes());
         } finally {
             stream.close();

@@ -1,36 +1,44 @@
-import React from 'react';
-import moment from 'moment';
-import {FlatList, Text} from 'react-native';
+// React
+import React from "react";
 
-const LogEntry = ({date, children}) => (
+// Third party
+import moment from "moment";
+import { FlatList, Text } from "react-native";
+
+// Components
+import GeolocationLog from "./GeolocationLog";
+
+const LogEntry = ({ date, children }) => (
   <>
-    <Text>{date && moment(date).format('DD/MM/YYYY HH:mm:ss')}</Text>
+    <Text>{date && moment(date).format("DD/MM/YYYY HH:mm:ss")}</Text>
     {children}
   </>
 );
-const Event = ({message}) => <Text>{message}</Text>;
-const Geolocation = ({location}) => (
-  <Text>GEOLOCATION : {JSON.stringify(location)}</Text>
+const Event = ({ message }) => <Text>{message}</Text>;
+const Error = ({ ex }) => <Text>ERROR : {JSON.stringify(ex)}</Text>;
+const SMS = ({ message, number, event }) => (
+  <Text>
+    SMS: {event} to {number}: {message}
+  </Text>
 );
-const Error = ({ex}) => <Text>ERROR : {JSON.stringify(ex)}</Text>;
-const SMS = ({message, number, event}) => <Text>SMS: {event} to {number}: {message}</Text>
 const logComponentMap = {
   event: Event,
-  geolocation: Geolocation,
+  geolocation: GeolocationLog,
   error: Error,
-  SMS
+  SMS,
 };
 
-const LogList = ({session}) => {
+const LogList = ({ session }) => {
   const {
-    logger: {logs},
+    logger: { logs },
   } = session;
 
   return (
     <FlatList
       data={logs}
-      renderItem={({item}) => {
-        const {date, type, data} = item;
+      keyExtractor={({ date }) => date}
+      renderItem={({ item }) => {
+        const { date, type, data } = item;
         const Component = logComponentMap[type];
 
         return (

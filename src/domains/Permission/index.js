@@ -53,13 +53,13 @@ export const PermissionGate = ({permissions = [], children, force = false}) => {
     });
   }, [permissions]);
 
-  if (filter(state, (s) => s !== RESULTS.GRANTED).length === 0) {
+  if (state && filter(state, (s) => s !== RESULTS.GRANTED).length === 0) {
     return children;
   }
 
   return (
     force &&
-    map(permissions, (permission, index) => {
+    map(permissions, (permission) => {
       if (state === RESULTS.GRANTED) {
         return null;
       }

@@ -8,17 +8,17 @@ import com.saveme.session.log.GeolocationLog;
 import com.saveme.session.log.Log;
 import com.saveme.session.log.SMSLog;
 
-import java.util.Dictionary;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 public class SMSActor implements IActor {
     @Override
-    public void act(Logger logger, Dictionary<String, Object> config) {
+    public void act(Logger logger, Map<String, String> config) {
         SmsManager manager = SmsManager.getDefault();
 
-        String number = config.get("number").toString();
-        String message = this.fillMessageTemplate(logger, config.get("message").toString());
+        String number = config.get("number");
+        String message = this.fillMessageTemplate(logger, config.get("message"));
 
         logger.pushLog(new SMSLog("SENDING", number, message));
         try {

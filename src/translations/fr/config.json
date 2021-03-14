@@ -3,5 +3,7 @@
     "isGoelocationRecorderEnabled": "Position géographique",
     "isMicrophoneRecorderEnabled": "Microphone",
     "isDevicesRecorderEnabled": "Bluetooth et wifi",
-    "action-com.saveme.session.actors.SMSActor": "SMS"
+    "saved": "Paramètres sauvegardés",
+    "trigger-time": "Se déclenche après (secondes)",
+    "actor-com-saveme-session-actors-SMSActor": "SMS"
 }

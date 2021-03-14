@@ -7,6 +7,7 @@ import com.saveme.session.actors.IActor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Dictionary;
+import java.util.Map;
 
 public class TimelineActorConfig {
     @Expose
@@ -16,7 +17,7 @@ public class TimelineActorConfig {
     @Expose
     private int recurringTime;
     @Expose
-    private Dictionary<String, Object> extra;
+    private Map<String, String> extra;
 
     public String getClassName() {
         return className;
@@ -30,13 +31,13 @@ public class TimelineActorConfig {
         return recurringTime;
     }
 
-    public Dictionary<String, Object> getExtra() {
+    public Map<String, String> getExtra() {
         return extra;
     }
 
     public void executeActor(Logger logger) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException  {
         Class<?> actorClass = Class.forName(this.className);
-        Constructor<?> actorClassConstructor = actorClass.getConstructor(String.class);
+        Constructor<?> actorClassConstructor = actorClass.getConstructor();
         IActor actor = (IActor) actorClassConstructor.newInstance();
 
         actor.act(logger, this.getExtra());

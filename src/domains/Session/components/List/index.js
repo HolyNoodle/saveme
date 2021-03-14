@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import * as RNFS from 'react-native-fs';
-import { } from 'react-native';
 import Sound from 'react-native-sound';
 
 import map from 'lodash/map';

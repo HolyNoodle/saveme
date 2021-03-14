@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
 // Third party
-import {
-  Container,
-  Content,
-  Text,
-  Switch,
-  Icon,
-  View
-} from 'native-base';
+import { View, Separator } from 'native-base';
+import { ToastAndroid } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import * as RNFS from 'react-native-fs';
+
+// Utils
+import { readConfig, writeConfig } from '../../utils/config';
+
+// Components
 import EntityList from '../../components/EntityList';
 import TimelineItem from './components/TimelineItem';
+import Loader from '../../components/Loader';
+import Recorders from './components/Recorders';
 
 const Config = ({ }) => {
   const { t } = useTranslation();
@@ -21,7 +21,7 @@ const Config = ({ }) => {
 
   useEffect(() => {
     if (!init) {
-      RNFS.readFile(RNFS.DocumentDirectoryPath + "/config.json")
+      readConfig()
         .then(file => {
           setConfig(JSON.parse(file));
         })
@@ -35,46 +35,21 @@ const Config = ({ }) => {
   const handleFieldUpdate = (field) => (value) => {
     const newConfig = { ...config, [field]: value };
     setConfig(newConfig);
-    RNFS.unlink(RNFS.DocumentDirectoryPath + "/config.json").then(() => {
-      RNFS.writeFile(RNFS.DocumentDirectoryPath + "/config.json", JSON.stringify(newConfig))
-        .catch(console.error);
+    writeConfig(newConfig).then(() => {
+      ToastAndroid.show(t('config:saved'), ToastAndroid.SHORT)
     })
   };
 
   return (
     <View>
-      {!init && (
-        <Text>
-          {t("common:loading")}
-        </Text>
-      )}
+      {!init && <Loader />}
       {init && (
         <View>
-          <Text>{t("config:recorders")}</Text>
-          <Text>
-            {t("config:isMicrophoneRecorderEnabled")}
-            <Switch
-              value={config.isMicrophoneRecorderEnabled}
-              onValueChange={handleFieldUpdate('isMicrophoneRecorderEnabled')}
-            />
-          </Text>
-          <Text>
-            {t("config:isGoelocationRecorderEnabled")}
-            <Switch
-              value={config.isGoelocationRecorderEnabled}
-              onValueChange={handleFieldUpdate('isGoelocationRecorderEnabled')}
-            />
-          </Text>
-          <Text>
-            {t("config:isDevicesRecorderEnabled")}
-            <Switch
-              value={config.isDevicesRecorderEnabled}
-              onValueChange={handleFieldUpdate('isDevicesRecorderEnabled')}
-            />
-          </Text>
-          <EntityList 
-            values={config.timeline} 
-            onChange={handleFieldUpdate('timeline')} 
+          <Recorders config={config} onFieldUpdate={handleFieldUpdate} />
+          <Separator />
+          <EntityList
+            values={config.timeline}
+            onChange={handleFieldUpdate('timeline')}
             translationSuffix={'actor'}
             component={TimelineItem}
           />

@@ -1,98 +1,29 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 // Third party
-import {
-  Container,
-  Text,
-  Button,
-  Footer,
-  Content,
-  FooterTab,
-  Header,
-  Drawer,
-} from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { PERMISSIONS } from 'react-native-permissions';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-// Services
-import EmergencyNotification from './native-modules/EmergencyNotification';
-
-// Components
-import Session from './domains/Session';
+//Components
+import Service from './domains/Service';
 import SessionList from './domains/Session/components/List';
-import { SpecialPermissionGate, PermissionGate } from './domains/Permission';
-import { NativeRouter } from 'react-router-native';
-import { MainRouter, Menu } from './components/MainRouter';
+import Config from './domains/Configuration';
+
+const Tab = createBottomTabNavigator();
 
 const Entrypoint = ({ }) => {
   const { t } = useTranslation();
-  const [serviceState, setServiceState] = useState();
-
-  const { started = false, mode } = serviceState || {};
-
-  useEffect(() => {
-    const callback = (json) => {
-      const newServiceState = JSON.parse(json);
-      setServiceState(serviceState => {
-        if (serviceState.started != newServiceState.started || serviceState.mode != newServiceState.mode || newServiceState.session) {
-          return newServiceState;
-        }
-
-        return serviceState
-      });
-    };
-
-    const interval = setInterval(() => {
-      EmergencyNotification.refreshState(callback);
-    }, 500);
-
-    EmergencyNotification.refreshState(callback);
-
-    return () => clearInterval(interval);
-  }, [setServiceState]);
-
-  const handleStart = () => {
-    EmergencyNotification.startService();
-  };
-  const handleStop = () => {
-    EmergencyNotification.stopService();
-  };
 
   return (
-    <NativeRouter>
-      <Container>
-        <Content>
-          <Menu serviceState={serviceState} />
-          <MainRouter serviceState={serviceState} />
-        </Content>
-        <Footer>
-          <FooterTab>
-            {!started ? (
-              <PermissionGate
-                permissions={[
-                  PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-                  PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-                  PERMISSIONS.ANDROID.RECORD_AUDIO,
-                  PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-                  PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-                ]}
-                force={true}>
-                <SpecialPermissionGate>
-                  <Button onPress={handleStart} primary full>
-                    <Text>{t('service:start')}</Text>
-                  </Button>
-                </SpecialPermissionGate>
-              </PermissionGate>
-            ) : (
-              <Button onPress={handleStop} danger full>
-                <Text>{t('service:stop')}</Text>
-              </Button>
-            )}
-          </FooterTab>
-        </Footer>
-      </Container>
-    </NativeRouter>
+    <NavigationContainer>
+      <Tab.Navigator initialRouteName={"parameters"}>
+        <Tab.Screen name="home" component={Service} options={{ title: t('nav:home') }} />
+        <Tab.Screen name="sessions" component={SessionList} options={{ title: t('nav:sessions') }} />
+        <Tab.Screen name="parameters" component={Config} options={{ title: t('nav:config') }} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 };
 

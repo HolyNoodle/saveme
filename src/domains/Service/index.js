@@ -63,11 +63,7 @@ const Service = ({ }) => {
           {!started ? (
             <PermissionGate
               permissions={[
-                PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-                PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-                PERMISSIONS.ANDROID.RECORD_AUDIO,
-                PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-                PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+                PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
               ]}
               force={true}>
               <SpecialPermissionGate>

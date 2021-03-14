@@ -29,17 +29,17 @@ const EntityItem = ({value, component: Component, onChange, edit = false}) => {
 
   return (
     <View>
-      <Component edit={edit} value={item} onChange={setItem} />
+      <Component edit={editing} value={item} onChange={setItem} />
       {editing && (
         <View>
-          <Button onPress={handleSaveClick}><Text>{t('common:actions-save')}</Text></Button>
-          <Button onPress={handleCancelClick}><Text>{t('common:actions-cancel')}</Text></Button>
+          <Button primary onPress={handleSaveClick}><Text>{t('common:actions-save')}</Text></Button>
+          <Button danger onPress={handleCancelClick}><Text>{t('common:actions-cancel')}</Text></Button>
         </View>
       )}
       {!editing && (
         <View>
-          <Button onPress={handleEditClick}><Text>{t('common:actions-edit')}</Text></Button>
-          <Button onPress={handleRemoveClick}><Text>{t('common:actions-remove')}</Text></Button>
+          <Button primary onPress={handleEditClick}><Text>{t('common:actions-edit')}</Text></Button>
+          <Button danger onPress={handleRemoveClick}><Text>{t('common:actions-remove')}</Text></Button>
         </View>
       )}
     </View>

@@ -17,6 +17,7 @@ const StyledDate = styled.Text`
   font-size: 12px;
   color: rgba(0, 0, 0, 0.4);
   margin-right: 8px;
+  width: 10%;
 `;
 
 const LogEntry = ({ elapsedTime, children }) => (

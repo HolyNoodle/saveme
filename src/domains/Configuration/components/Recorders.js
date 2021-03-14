@@ -43,6 +43,7 @@ const Recorders = ({ config, onFieldUpdate }) => {
           permissions={[
             PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
             PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+            PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION
           ]}
           force={true}
         >
@@ -56,7 +57,7 @@ const Recorders = ({ config, onFieldUpdate }) => {
         <Text>{t("config:isDevicesRecorderEnabled")}</Text>
         <PermissionGate
           permissions={[
-            PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION
+            PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION
           ]}
           force={true}
         >

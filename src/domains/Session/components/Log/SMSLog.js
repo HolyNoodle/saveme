@@ -37,7 +37,7 @@ const SMS = ({ message, number, event }) => {
     );
   }
 
-  return <Error>{t("session:sms-error", { envet, number, message })}</Error>;
+  return <Error>{t("session:sms-error", { event, number, message })}</Error>;
 };
 
 export default SMS;

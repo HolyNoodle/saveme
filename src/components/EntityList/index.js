@@ -19,7 +19,7 @@ const EntityList = ({ values = [], translationSuffix = '', onChange, component }
     if(entity === null) {
       return;
     }
-    
+
     const newValues = [...values];
     const index = newValues.findIndex(f => f === oldEntity);
     if(entity) {
@@ -47,7 +47,7 @@ const EntityList = ({ values = [], translationSuffix = '', onChange, component }
         <EntityItem edit={true} onChange={handleAddChange} component={component} />
       )}
       {!adding && (
-        <Button onPress={handleAddingClick}>
+        <Button primary onPress={handleAddingClick}>
           <Text>{t(`${translationSuffix}:entity-add`)}</Text>
         </Button>
       )}

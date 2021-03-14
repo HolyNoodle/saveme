@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 
 // Third party
 import moment from "moment";
-import { FlatList, Text } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 // Components
@@ -12,10 +12,15 @@ import LogEntry from "./LogEntry";
 import SMS from "./SMSLog";
 
 const Event = ({ message }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return <Text>{t(`session:${message}`)}</Text>;
 };
-const Error = ({ ex }) => <Text>ERROR : {JSON.stringify(ex)}</Text>;
+const Error = ({ origin, exception, stacktrace }) => (
+  <View>
+    <Text>ERROR - {origin} : {exception}</Text>
+    <Text>{stacktrace}</Text>
+  </View>
+);
 const logComponentMap = {
   event: Event,
   geolocation: GeolocationLog,
@@ -24,21 +29,20 @@ const logComponentMap = {
 };
 
 const LogList = ({ session, ...listProps }) => {
-  const {
-    logger: { logs = [] } = {},
-  } = session;
+  const { logger: { logs = [] } = {} } = session;
 
   const sortedLogs = useMemo(() => {
     let lastElement = null;
-    const normalizedLogs = logs.map(({date, ...log}) => {
+    const normalizedLogs = logs.map(({ date, ...log }) => {
       const momentDate = date && moment(date);
-      const elapsedTime = lastElement && momentDate.diff(lastElement.date, 'seconds');
+      const elapsedTime =
+        lastElement && momentDate.diff(lastElement.date, "seconds");
 
-      const newElement = ({
+      const newElement = {
         ...log,
         date: momentDate,
-        elapsedTime
-      })
+        elapsedTime,
+      };
 
       lastElement = newElement;
 

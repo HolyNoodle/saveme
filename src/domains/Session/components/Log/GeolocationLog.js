@@ -2,9 +2,9 @@
 import React, {useCallback} from "react";
 
 // Third party
-import { Linking, Text, ToastAndroid } from "react-native";
+import { Linking, ToastAndroid } from "react-native";
+import { Button, Text } from "native-base";
 import { useTranslation } from "react-i18next";
-import { Button } from "native-base";
 import styled from "styled-components/native";
 
 const StyledRow = styled.View`
@@ -12,6 +12,8 @@ const StyledRow = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  width: 90%;
+  padding-right:10px;
 `;
 
 const Geolocation = ({ longitude, latitude }) => {
@@ -32,7 +34,7 @@ const Geolocation = ({ longitude, latitude }) => {
     <StyledRow>
       <Text>{t('session:geolocation')}</Text>
       {/* <Text>{t('session:geolocation-details', {altitude, speed})}</Text> */}
-      <Button onPress={handlePress}>
+      <Button primary onPress={handlePress}>
         <Text>{t('session:geolocation-see-in-gmaps')}</Text>
       </Button>
     </StyledRow>

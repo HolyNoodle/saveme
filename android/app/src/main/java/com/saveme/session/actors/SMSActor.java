@@ -18,10 +18,12 @@ public class SMSActor implements IActor {
         SmsManager manager = SmsManager.getDefault();
 
         String number = config.get("number");
-        String message = this.fillMessageTemplate(logger, config.get("message"));
+        String rawMessage = config.get("message");
+        logger.pushLog(new SMSLog("SENDING", number, rawMessage));
 
-        logger.pushLog(new SMSLog("SENDING", number, message));
         try {
+            String message = this.fillMessageTemplate(logger, rawMessage);
+
             manager.sendTextMessage(number, null, message, null, null);
             logger.pushLog(new SMSLog("SENT", number, message));
         } catch(Exception ex) {
@@ -32,24 +34,26 @@ public class SMSActor implements IActor {
     private String fillMessageTemplate(Logger logger, String message) {
         List<Log> logs = logger.getLogs();
         ListIterator<Log> iterator = logs.listIterator(logs.size());
+        String copy = message;
 
-        if(message.contains("{location}")) {
-            String locationString = "";
+        if(message.contains("#location#")) {
+            String locationString = "Unknown";
 
             while (iterator.hasPrevious()) {
                 Log log = iterator.previous();
 
                 if (log instanceof GeolocationLog) {
-                    Location location = (Location) log.getData().get("location");
+                    String longitude = log.getData().get("longitude").toString();
+                    String latitude = log.getData().get("latitude").toString();
 
-                    locationString = "https://www.google.com/maps/place/" + location.getLatitude() + "," + location.getLongitude();
+                    locationString = "https://www.google.com/maps/place/" + latitude + "," + longitude;
                     break;
                 }
             }
 
-            message.replaceAll("\\{location\\}", locationString);
+            copy = copy.replaceAll("#location#", locationString);
         }
 
-        return message;
+        return copy;
     }
 }

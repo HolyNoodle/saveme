@@ -18,11 +18,12 @@ import EmergencyNotification from '../../native-modules/EmergencyNotification';
 
 // Components
 import { SpecialPermissionGate, PermissionGate } from '../Permission';
+import Session from '../Session';
 
 const Service = ({ }) => {
   const { t } = useTranslation();
   const [serviceState, setServiceState] = useState();
-  const { started = false } = serviceState || {};
+  const { started = false, session } = serviceState || {};
 
   useEffect(() => {
     const callback = (json) => {
@@ -55,7 +56,7 @@ const Service = ({ }) => {
   return (
     <Container>
       <Content>
-        <Text>TBD</Text>
+        {session ? <Session session={session} /> : <Text>TBD</Text>}
       </Content>
       <Footer>
         <FooterTab>

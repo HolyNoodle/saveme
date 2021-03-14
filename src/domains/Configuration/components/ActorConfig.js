@@ -11,6 +11,7 @@ import EditableField from "../../../components/EntityList/components/EditableFie
 
 // Utils
 import { sanitizeClassName } from "../../../utils";
+import { Row } from "../../../components/Layout";
 
 const actorComponentMap = {
   "com.saveme.session.actors.SMSActor": SMSActorConfig,
@@ -48,16 +49,16 @@ const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
 
   return (
     <View>
-      <View styled={{ flexDirection: "row" }}>
+      <Row>
         <Text>{t("config:actor")}</Text>
         <EditableField
           edit={edit}
           value={className}
           onChange={setClassName}
           editComponent={ActorPicker}
-          displayComponent={() => <Text>{t(`config:actor-${className}`)}</Text>}
+          displayComponent={() => <Text>{t(`config:actor-${sanitizeClassName(className)}`)}</Text>}
         />
-      </View>
+      </Row>
 
       {ActorConfig && (
         <ActorConfig edit={edit} {...extra} onChange={setExtra} />

@@ -1,11 +1,13 @@
 // React
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 
 // Third party
 import { Linking, ToastAndroid } from "react-native";
-import { Button, Text } from "native-base";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components/native";
+
+// Components
+import { SecondaryIconButton, PrimaryText } from "../../../../components/Layout";
 
 const StyledRow = styled.View`
   display: flex;
@@ -13,7 +15,7 @@ const StyledRow = styled.View`
   justify-content: space-between;
   align-items: center;
   width: 90%;
-  padding-right:10px;
+  padding-right: 10px;
 `;
 
 const Geolocation = ({ longitude, latitude }) => {
@@ -26,19 +28,26 @@ const Geolocation = ({ longitude, latitude }) => {
     if (supported) {
       await Linking.openURL(url);
     } else {
-      ToastAndroid.show(t('session:geolocation-open-gmaps-error'), ToastAndroid.SHORT);
+      ToastAndroid.show(
+        t("session:geolocation-open-gmaps-error"),
+        ToastAndroid.SHORT
+      );
     }
   }, [url]);
 
   return (
     <StyledRow>
-      <Text>{t('session:geolocation')}</Text>
-      {/* <Text>{t('session:geolocation-details', {altitude, speed})}</Text> */}
-      <Button primary onPress={handlePress}>
-        <Text>{t('session:geolocation-see-in-gmaps')}</Text>
-      </Button>
+      <PrimaryText>{t("session:geolocation")}</PrimaryText>
+      {/* <PrimaryTe<xt>{t('session:geolocation-details', {altitude, speed})}</PrimaryText> */}
+      <SecondaryIconButton
+        reversed
+        type={"Entypo"}
+        name={"location"}
+        raised
+        onPress={handlePress}
+      />
     </StyledRow>
-  );  
+  );
 };
 
 export default Geolocation;

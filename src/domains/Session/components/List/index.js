@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 // Third party
 import map from "lodash/map";
 import sortBy from "lodash/sortBy";
-import { List, Text, ListItem } from "native-base";
+import { List } from "native-base";
 import { useTranslation } from "react-i18next";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -12,6 +12,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { convertJavaDateToMoment } from "../../../../utils";
 import { getSessionList, removeSession } from "../../utils";
 import { SessionScreen } from "../../index";
+import { ListItem, PrimaryText } from "../../../../components/Layout";
 
 const SessionList = ({ navigation }) => {
   const { t } = useTranslation();
@@ -45,11 +46,11 @@ const SessionList = ({ navigation }) => {
         const { startDate } = item;
         return (
           <ListItem key={startDate} onPress={() => handleOpenSession(item)}>
-            <Text>
+            <PrimaryText>
               {startDate.format(
                 t("common:long_date_format")
               )}
-            </Text>
+            </PrimaryText>
           </ListItem>
         );
       })}

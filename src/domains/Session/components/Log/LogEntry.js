@@ -3,19 +3,14 @@ import React from "react";
 
 // Third party
 import styled from "styled-components/native";
+import { Row } from "../../../../components/Layout";
 
-const StyledContainer = styled.View`
-  border-width: 1px;
-  padding: 8px;
-  margin-bottom: 6px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.03);
+const StyledContainer = styled(Row)`
+  width: 100%;
 `;
 const StyledDate = styled.Text`
   font-size: 12px;
-  color: rgba(0, 0, 0, 0.4);
+  color: ${({theme}) => theme.SECONDARY_TEXT_COLOR};
   margin-right: 8px;
   width: 10%;
 `;

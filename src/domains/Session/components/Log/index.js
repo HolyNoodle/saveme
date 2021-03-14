@@ -10,15 +10,18 @@ import { useTranslation } from "react-i18next";
 import GeolocationLog from "./GeolocationLog";
 import LogEntry from "./LogEntry";
 import SMS from "./SMSLog";
+import { ListItem, PrimaryText } from "../../../../components/Layout";
 
 const Event = ({ message }) => {
   const { t } = useTranslation();
-  return <Text>{t(`session:${message}`)}</Text>;
+  return <PrimaryText>{t(`session:${message}`)}</PrimaryText>;
 };
 const Error = ({ origin, exception, stacktrace }) => (
   <View>
-    <Text>ERROR - {origin} : {exception}</Text>
-    <Text>{stacktrace}</Text>
+    <PrimaryText>
+      ERROR - {origin} : {exception}
+    </PrimaryText>
+    <PrimaryText>{stacktrace}</PrimaryText>
   </View>
 );
 const logComponentMap = {
@@ -64,9 +67,11 @@ const LogList = ({ session, ...listProps }) => {
         const Component = logComponentMap[type];
 
         return (
-          <LogEntry date={date} elapsedTime={elapsedTime}>
-            <Component {...data} date={date} type={type} />
-          </LogEntry>
+          <ListItem>
+            <LogEntry date={date} elapsedTime={elapsedTime}>
+              <Component {...data} date={date} type={type} />
+            </LogEntry>
+          </ListItem>
         );
       }}
     />

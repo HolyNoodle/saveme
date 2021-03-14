@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text } from "react-native";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { PrimaryText } from "../../../../components/Layout";
 
 const Clock = ({ startDate, endDate }) => {
   const { t } = useTranslation();
@@ -35,19 +36,19 @@ const Clock = ({ startDate, endDate }) => {
 
   return (
     <View>
-      <Text>
+      <PrimaryText>
         {t("session:clock-title", {
           date: startDate && startDate.format("dddd DD MMMM YYYY"),
           time: startDate && startDate.format("HH:mm"),
         })}
-      </Text>
-      <Text>
+      </PrimaryText>
+      <PrimaryText>
         {t("session:clock-elapsed-time", {
           hours: hours.toString().padStart(2, "0"),
           minutes: minutes.toString().padStart(2, "0"),
           seconds: seconds.toString().padStart(2, "0"),
         })}
-      </Text>
+      </PrimaryText>
     </View>
   );
 };

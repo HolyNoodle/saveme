@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components/native";
 
 const Pending = styled.Text`
-  color: orangered;
+  color: ${({theme}) => theme.STATUS.WARN};
 `;
 const Sent = styled.Text`
-  color: green;
+  color: ${({theme}) => theme.STATUS.OK};
 `;
 const Error = styled.Text`
-  color: red;
+  color: ${({theme}) => theme.STATUS.ERROR};
 `;
 const SentContainer = styled.View`
   display: flex;

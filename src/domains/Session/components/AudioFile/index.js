@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 
 // Third party
-import { Button, Text } from "native-base";
+import { Icon } from "native-base";
 import { ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
 import Sound from "react-native-sound";
+
+// Components
+import { PrimaryButton, Row } from "../../../../components/Layout";
 
 const AudioFile = ({ filePath }) => {
   const { t } = useTranslation();
@@ -27,11 +30,11 @@ const AudioFile = ({ filePath }) => {
     return () => {
       setAudio();
       setIsPlaying(false);
-    }
-  }, [filePath])
+    };
+  }, [filePath]);
 
   const handlePlayToggle = () => {
-    if(!audio) {
+    if (!audio) {
       return;
     }
 
@@ -49,9 +52,13 @@ const AudioFile = ({ filePath }) => {
   };
 
   return (
-    <Button onPress={handlePlayToggle}>
-      <Text>LISTEN</Text>
-    </Button>
+    <Row>
+      <PrimaryButton
+        icon={<Icon type={"EvilIcons"} name={"play"} />}
+        onPress={handlePlayToggle}
+        title={"LISTEN"}
+      />
+    </Row>
   );
 };
 

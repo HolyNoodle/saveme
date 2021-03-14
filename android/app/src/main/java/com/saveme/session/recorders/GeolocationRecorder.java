@@ -24,7 +24,7 @@ public class GeolocationRecorder implements IRecorder, LocationListener {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
         if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
-            criteria.setSpeedAccuracy(Criteria.ACCURACY_HIGH);
+            criteria.setSpeedAccuracy(Criteria.ACCURACY_LOW);
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             criteria.setAltitudeRequired(true);
             criteria.setBearingRequired(true);

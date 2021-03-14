@@ -1,9 +1,13 @@
+//React
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text } from "react-native";
 
+// Third party
+import { View, Text } from "react-native";
 import moment from "moment";
+import { useTranslation } from "react-i18next";
 
 const Clock = ({ startDate, endDate }) => {
+  const { t } = useTranslation();
   const [, setNow] = useState(false);
   const intervalId = useRef();
 
@@ -11,7 +15,7 @@ const Clock = ({ startDate, endDate }) => {
     useEffect(() => {
       if (!intervalId.current) {
         intervalId.current = setInterval(function () {
-          setNow((now) => !!now);
+          setNow((now) => !now);
         }, 100);
       }
 
@@ -32,13 +36,17 @@ const Clock = ({ startDate, endDate }) => {
   return (
     <View>
       <Text>
-        {startDate.format('LLLL')}
-        {endDate && endDate.format('LLL')}
+        {t("session:clock-title", {
+          date: startDate && startDate.format("dddd DD MMMM YYYY"),
+          time: startDate && startDate.format("HH:mm"),
+        })}
       </Text>
       <Text>
-        {hours.toString().padStart(2, "0")}:
-        {minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}
+        {t("session:clock-elapsed-time", {
+          hours: hours.toString().padStart(2, "0"),
+          minutes: minutes.toString().padStart(2, "0"),
+          seconds: seconds.toString().padStart(2, "0"),
+        })}
       </Text>
     </View>
   );

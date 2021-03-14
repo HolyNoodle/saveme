@@ -25,7 +25,7 @@ public class SMSActor implements IActor {
             manager.sendTextMessage(number, null, message, null, null);
             logger.pushLog(new SMSLog("SENT", number, message));
         } catch(Exception ex) {
-            logger.pushLog(new SMSLog("ERROR", number, message));
+            logger.pushLog(new SMSLog("ERROR", number, ex.getMessage()));
         }
     }
 
@@ -42,12 +42,12 @@ public class SMSActor implements IActor {
                 if (log instanceof GeolocationLog) {
                     Location location = (Location) log.getData().get("location");
 
-                    locationString = location.getLongitude() + ";" + location.getLatitude();
+                    locationString = "https://www.google.com/maps/place/" + location.getLatitude() + "," + location.getLongitude();
                     break;
                 }
             }
 
-            message.replaceAll("\\{location}", locationString);
+            message.replaceAll("\\{location\\}", locationString);
         }
 
         return message;

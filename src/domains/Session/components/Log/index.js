@@ -1,26 +1,21 @@
 // React
-import React from "react";
+import React, { useMemo } from "react";
 
 // Third party
 import moment from "moment";
 import { FlatList, Text } from "react-native";
+import { useTranslation } from "react-i18next";
 
 // Components
 import GeolocationLog from "./GeolocationLog";
+import LogEntry from "./LogEntry";
+import SMS from "./SMSLog";
 
-const LogEntry = ({ date, children }) => (
-  <>
-    <Text>{date && moment(date).format("DD/MM/YYYY HH:mm:ss")}</Text>
-    {children}
-  </>
-);
-const Event = ({ message }) => <Text>{message}</Text>;
+const Event = ({ message }) => {
+  const {t} = useTranslation();
+  return <Text>{t(`session:${message}`)}</Text>;
+};
 const Error = ({ ex }) => <Text>ERROR : {JSON.stringify(ex)}</Text>;
-const SMS = ({ message, number, event }) => (
-  <Text>
-    SMS: {event} to {number}: {message}
-  </Text>
-);
 const logComponentMap = {
   event: Event,
   geolocation: GeolocationLog,
@@ -28,21 +23,44 @@ const logComponentMap = {
   SMS,
 };
 
-const LogList = ({ session }) => {
+const LogList = ({ session, ...listProps }) => {
   const {
-    logger: { logs },
+    logger: { logs = [] } = {},
   } = session;
+
+  const sortedLogs = useMemo(() => {
+    let lastElement = null;
+    const normalizedLogs = logs.map(({date, ...log}) => {
+      const momentDate = date && moment(date);
+      const elapsedTime = lastElement && momentDate.diff(lastElement.date, 'seconds');
+
+      const newElement = ({
+        ...log,
+        date: momentDate,
+        elapsedTime
+      })
+
+      lastElement = newElement;
+
+      return newElement;
+    });
+
+    return normalizedLogs.sort(
+      ({ date: dateA }, { date: dateB }) => dateA.valueOf() - dateB.valueOf()
+    );
+  }, [logs]);
 
   return (
     <FlatList
-      data={logs}
-      keyExtractor={({ date }) => date}
+      {...listProps}
+      data={sortedLogs}
+      keyExtractor={({ date }, index) => date.valueOf() + "_" + index}
       renderItem={({ item }) => {
-        const { date, type, data } = item;
+        const { date, type, data, elapsedTime } = item;
         const Component = logComponentMap[type];
 
         return (
-          <LogEntry date={date}>
+          <LogEntry date={date} elapsedTime={elapsedTime}>
             <Component {...data} date={date} type={type} />
           </LogEntry>
         );

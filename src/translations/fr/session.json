@@ -1,3 +1,18 @@
 {
-    "delete": "Supprimer la session"
+    "delete": "Supprimer la session",
+    "clock-title": "Le {{date}} à {{time}}",
+    "clock-elapsed-time": "Durée : {{hours}}:{{minutes}}:{{seconds}}",
+    "geolocation": "Position",
+    "geolocation-see-in-gmaps": "Voir dans GMAPS",
+    "geolocation-details": "Vitesse : {{speed}}, altitude: {{altitude}}",
+    "geolocation-open-gmaps-error": "Une erreur s'est produite lors de l'ouverture du lien vers GMAPS",
+    "sms-sending": "Envoie d'un SMS à {{number}}",
+    "sms-sent": "SMS envoyé à {{number}}",
+    "sms-error": "SMS non envoyé à {{number}} : {{message}}",
+    "sms-message": "Contenu :",
+
+    "MICROPHONE_RECORDER_START": "Enregistrement du microphone",
+    "MICROPHONE_RECORDER_STOP": "Fin de l'enregistrement du microphone",
+    "GEOLOCATION_RECORDER_START": "Enregistrement de votre position",
+    "GEOLOCATION_RECORDER_STOP": "Fin de l'enregistrement de votre position"
 }

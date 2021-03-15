@@ -1,9 +1,19 @@
-export const dark = {
-  PRIMARY_BACKGROUND_COLOR: '#FFF',
-  PRIMARY_TEXT_COLOR: '#1d3557',
-  SECONDARY_TEXT_COLOR: '#457b9d',
-  PRIMARY_BUTTON_COLOR: '#457b9d',
-  SECONDARY_BUTTON_COLOR: '#f1faee',
+export const palette = {
+  active: '#C23BE7',
+  main: '#774DC2',
+  secondary: '#80D9A6',
+  neutral: '#FFFFFF'
+}
+
+export const women = {
+  PRIMARY_BACKGROUND_COLOR: palette.neutral,
+  PRIMARY_TEXT_COLOR: palette.main,
+  SECONDARY_TEXT_COLOR: palette.secondary,
+  PRIMARY_BUTTON_BACKGROUND_COLOR: palette.main,
+  SECONDARY_BUTTON_BACKGROUND_COLOR: palette.secondary,
+  PRIMARY_BUTTON_TEXT_COLOR: palette.neutral,
+  SECONDARY_BUTTON_TEXT_COLOR: palette.neutral,
+  ACTIVE_COLOR: palette.active,
   STATUS: {
     OK: '#06d6a0',
     WARN: '#f4a261',
@@ -12,5 +22,5 @@ export const dark = {
 }
 
 export default {
-  dark
+  women
 };

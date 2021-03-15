@@ -27,7 +27,7 @@ export const ListItem = styled(ReactListItem)`
   padding-right: 8px;
 `;
 export const PrimaryButton = styled.Button`
-  background-color: ${({ theme }) => theme.PRIMARY_BUTTON_COLOR};
+  background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
 `;
 export const SecondaryButton = styled.Button`
   background-color: ${({ theme }) => theme.SECONDARY_BUTTON_COLOR};
@@ -39,10 +39,10 @@ export const IconButton = styled(Icon)`
   border-radius: 21px;
 `;
 export const PrimaryIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.PRIMARY_TEXT_COLOR};
-  background-color: ${({ theme }) => theme.PRIMARY_BUTTON_COLOR};
+  color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
+  background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
 `;
 export const SecondaryIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.SECONDARY_TEXT_COLOR};
-  background-color: ${({ theme }) => theme.SECONDARY_BUTTON_COLOR};
+  color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
+  background-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
 `;

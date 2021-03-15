@@ -16,7 +16,7 @@ moment.locale("fr");
 
 const App = () => (
   <I18nextProvider i18n={translations}>
-    <ThemeProvider theme={themes.dark}>
+    <ThemeProvider theme={themes.women}>
       <StatusBar barStyle="dark-content" />
       <Entrypoint />
     </ThemeProvider>

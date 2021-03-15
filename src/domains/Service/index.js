@@ -1,5 +1,5 @@
 // React
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Third party
 import {
@@ -9,31 +9,52 @@ import {
   Footer,
   Content,
   FooterTab,
-} from 'native-base';
-import { useTranslation } from 'react-i18next';
-import { PERMISSIONS } from 'react-native-permissions';
+} from "native-base";
+import { useTranslation } from "react-i18next";
+import { PERMISSIONS } from "react-native-permissions";
 
 // Services
-import EmergencyNotification from '../../native-modules/EmergencyNotification';
+import EmergencyNotification from "../../native-modules/EmergencyNotification";
 
 // Components
-import { SpecialPermissionGate, PermissionGate } from '../Permission';
-import Session from '../Session';
+import { SpecialPermissionGate, PermissionGate } from "../Permission";
+import Session from "../Session";
+import { useOvermind } from "../../state";
 
-const Service = ({ }) => {
+const Service = ({}) => {
   const { t } = useTranslation();
   const [serviceState, setServiceState] = useState();
+  const {
+    actions: {
+      sessions: { invalidateSessions },
+    },
+  } = useOvermind();
   const { started = false, session } = serviceState || {};
 
   useEffect(() => {
     const callback = (json) => {
       const newServiceState = JSON.parse(json);
-      setServiceState(serviceState => {
-        if (!serviceState || serviceState.started != newServiceState.started || serviceState.mode != newServiceState.mode || newServiceState.session) {
+
+      setServiceState((serviceState) => {
+        const wasInSession =
+          serviceState &&
+          (serviceState.mode === "HELP" || serviceState.mode === "EMERGENCY");
+        const isNotInSession =
+          newServiceState.mode === "INACTIVE" ||
+          newServiceState.mode === "LISTENING";
+
+        wasInSession && isNotInSession && invalidateSessions();
+
+        if (
+          !serviceState ||
+          serviceState.started != newServiceState.started ||
+          serviceState.mode != newServiceState.mode ||
+          newServiceState.session
+        ) {
           return newServiceState;
         }
 
-        return serviceState
+        return serviceState;
       });
     };
 
@@ -62,19 +83,18 @@ const Service = ({ }) => {
         <FooterTab>
           {!started ? (
             <PermissionGate
-              permissions={[
-                PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-              ]}
-              force={true}>
+              permissions={[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]}
+              force={true}
+            >
               <SpecialPermissionGate>
                 <Button onPress={handleStart} primary full>
-                  <Text>{t('service:start')}</Text>
+                  <Text>{t("service:start")}</Text>
                 </Button>
               </SpecialPermissionGate>
             </PermissionGate>
           ) : (
             <Button onPress={handleStop} danger full>
-              <Text>{t('service:stop')}</Text>
+              <Text>{t("service:stop")}</Text>
             </Button>
           )}
         </FooterTab>

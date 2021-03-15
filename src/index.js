@@ -36,7 +36,7 @@ const Entrypoint = ({}) => {
     colors: {
       ...DefaultTheme.colors,
       background: theme.PRIMARY_BACKGROUND_COLOR,
-      primary: theme.ACTIVE_COLOR,
+      primary: theme.PRIMARY_BACKGROUND_COLOR,
       card: theme.PRIMARY_BUTTON_BACKGROUND_COLOR,
       text: theme.PRIMARY_BUTTON_TEXT_COLOR,
       border: theme.PRIMARY_BUTTON_BACKGROUND_COLOR,

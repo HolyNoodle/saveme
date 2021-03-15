@@ -1,13 +1,13 @@
 import React from "react";
 
 // Third party
-import { Switch, H3 } from "native-base";
+import { H3 } from "native-base";
 import { useTranslation } from "react-i18next";
 import { PERMISSIONS } from "react-native-permissions";
 
 // Components
 import { PermissionGate } from "../../Permission";
-import { ListItem, PrimaryText, SpacedRow } from "../../../components/Layout";
+import { ListItem, PrimaryText, SpacedRow, Switch } from "../../../components/Layout";
 
 const Recorders = ({ config, onFieldUpdate }) => {
   const { t } = useTranslation();

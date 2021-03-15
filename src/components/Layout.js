@@ -1,6 +1,13 @@
+// React
+import React from "react";
+
 // Third party
-import { Icon, ListItem as ReactListItem } from "native-base";
-import styled from "styled-components/native";
+import {
+  Icon,
+  ListItem as ReactListItem,
+  Switch as ReactSwitch,
+} from "native-base";
+import styled, { useTheme } from "styled-components/native";
 
 export const Row = styled.View`
   display: flex;
@@ -46,3 +53,19 @@ export const SecondaryIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
   background-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
 `;
+export const Switch = ({ value, ...props }) => {
+  const theme = useTheme();
+  const inactiveColor = "rgba(180,180,180,1)";
+
+  return (
+    <ReactSwitch
+      trackColor={{
+        true: theme.PRIMARY_BUTTON_BACKGROUND_COLOR,
+        false: inactiveColor,
+      }}
+      value={value}
+      thumbColor={value ? theme.PRIMARY_BUTTON_BACKGROUND_COLOR : inactiveColor}
+      {...props}
+    />
+  );
+};

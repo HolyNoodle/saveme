@@ -4,11 +4,9 @@ import { createActionsHook, createEffectsHook, createHook, createReactionHook, c
 import { namespaced } from 'overmind/config'
 
 // State
-import common from './common'
-import sessions from './sessions'
+import sessions from '../domains/Session/state'
 
 const config = namespaced({
-  common,
   sessions
 });
 

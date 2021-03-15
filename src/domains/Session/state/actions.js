@@ -2,7 +2,7 @@
 import sortBy from "lodash/sortBy";
 
 // Utils
-import { convertJavaDateToMoment } from "../../utils";
+import { convertJavaDateToMoment } from "../../../utils";
 
 export const getSessions = async ({ state, effects }) => {
   state.sessions.loading = true;
@@ -23,3 +23,10 @@ export const getSessions = async ({ state, effects }) => {
 export const invalidateSessions = ({ state }) => {
   state.sessions.invalid = true;
 };
+export const removeSession = async ({state, actions, effects}, session) => {
+  await effects.sessions.removeSession(session);
+
+  delete state.sessions.sessions[session.startDate];
+
+  actions.sessions.invalidateSessions();
+}

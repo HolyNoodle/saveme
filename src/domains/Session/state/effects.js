@@ -24,3 +24,6 @@ export const getSessionList = async () => {
 
   return processedSessions;
 };
+export const removeSession = (session) => {
+  return RNFS.unlink(session.sessionName);
+};

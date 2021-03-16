@@ -4,7 +4,6 @@ import React from "react";
 // Third party
 import {
   Button,
-  Icon,
   ListItem as ReactListItem,
   Switch as ReactSwitch,
 } from "native-base";
@@ -35,26 +34,22 @@ export const ListItem = styled(ReactListItem)`
   padding-right: 8px;
 `;
 export const StyledButton = styled(Button)`
-  font-size: 18px;
-  padding: 12px;
-  height: 42px;
+  height: 36px;
+  min-width: 36px;
   border-radius: 21px;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin: 0 8px;
 `;
 export const PrimaryButton = styled(StyledButton)`
   color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
   background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
 `;
-export const SecondaryButton = styled.Button`
-`;
-export const IconButton = styled(Icon)`
-  font-size: 18px;
-  padding: 12px;
-  width: 42px;
-  height: 42px;
-  border-radius: 21px;
+export const SecondaryButton = styled(StyledButton)`
+  color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
+  background-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
 `;
 export const Switch = ({ value, ...props }) => {
   const theme = useTheme();

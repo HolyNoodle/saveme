@@ -2,17 +2,9 @@
 import React, { useEffect, useRef } from "react";
 
 // Third party
-import { Text, View } from 'native-base';
+import { Icon, Text, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Animated, Easing } from "react-native";
-import styled from 'styled-components';
-
-// Components
-import { SecondaryIconButton } from "./Layout";
-
-const Container = styled.View`
-  display: flex;
-`;
 
 const Loader = () => {
   const { t } = useTranslation();
@@ -25,9 +17,9 @@ const Loader = () => {
   );
 };
 
-const AnimatedIcon = Animated.createAnimatedComponent(SecondaryIconButton);
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
-export const SecondaryLoadingIconButton = () => {
+export const LoadingIcon = () => {
   const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

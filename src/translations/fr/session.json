@@ -1,7 +1,7 @@
 {
     "delete": "Supprimer la session",
     "clock-title": "Le {{date}} à {{time}}",
-    "clock-elapsed-time": "Durée : {{hours}}:{{minutes}}:{{seconds}}",
+    "clock-elapsed-time": "Durée : {{time}}",
     "geolocation": "Position",
     "geolocation-see-in-gmaps": "Voir dans GMAPS",
     "geolocation-details": "Vitesse : {{speed}}, altitude: {{altitude}}",
@@ -10,6 +10,7 @@
     "sms-sent": "SMS envoyé à {{number}}",
     "sms-error": "SMS non envoyé à {{number}} : {{message}}",
     "sms-message": "Contenu :",
+    "microphone-listen": "Ecouter l'enregistrement audio", 
 
     "MICROPHONE_RECORDER_START": "Enregistrement du microphone",
     "MICROPHONE_RECORDER_STOP": "Fin de l'enregistrement du microphone",

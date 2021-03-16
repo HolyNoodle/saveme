@@ -2,10 +2,15 @@
 import React, { useState, useEffect, useRef } from "react";
 
 // Third party
-import { View, Text } from "react-native";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
-import { PrimaryText } from "../../../../components/Layout";
+import { PrimaryText, SpacedRow } from "../../../../components/Layout";
+import styled from "styled-components/native";
+
+const Container = styled(SpacedRow)`
+  width: 100%;
+  padding: 8px;
+`;
 
 const Clock = ({ startDate, endDate }) => {
   const { t } = useTranslation();
@@ -34,22 +39,22 @@ const Clock = ({ startDate, endDate }) => {
   const minutes = Math.floor((diff / 1000 / 60) % 60);
   const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
 
+  const time = [
+    hours > 0 && hours.toString().padStart(2, "0"),
+    minutes.toString().padStart(2, "0"),
+    seconds.toString().padStart(2, "0"),
+  ].filter(s => !!s).join(':');
+
   return (
-    <View>
-      <PrimaryText>
+    <Container>
+      <PrimaryText style={{ fontWeight: "bold", fontSize: 14 }}>
         {t("session:clock-title", {
           date: startDate && startDate.format("dddd DD MMMM YYYY"),
           time: startDate && startDate.format("HH:mm"),
         })}
       </PrimaryText>
-      <PrimaryText>
-        {t("session:clock-elapsed-time", {
-          hours: hours.toString().padStart(2, "0"),
-          minutes: minutes.toString().padStart(2, "0"),
-          seconds: seconds.toString().padStart(2, "0"),
-        })}
-      </PrimaryText>
-    </View>
+      <PrimaryText>{t("session:clock-elapsed-time", { time })}</PrimaryText>
+    </Container>
   );
 };
 

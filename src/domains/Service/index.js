@@ -17,7 +17,7 @@ import { PERMISSIONS } from "react-native-permissions";
 import EmergencyNotification from "../../native-modules/EmergencyNotification";
 
 // Components
-import { SpecialPermissionGate, PermissionGate } from "../Permission";
+import { PermissionGate } from "../Permission";
 import Session from "../Session";
 import { useOvermind } from "../../state";
 

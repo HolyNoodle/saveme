@@ -2,13 +2,20 @@
 import React, { useEffect, useState } from "react";
 
 // Third party
-import { Icon } from "native-base";
+import { Icon, Text } from "native-base";
 import { ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
 import Sound from "react-native-sound";
+import * as RNFS from "react-native-fs";
+import styled from "styled-components/native";
 
 // Components
 import { PrimaryButton, Row } from "../../../../components/Layout";
+
+const StyledRow = styled(Row)`
+  justify-content: center;
+  margin: 8px 0;
+`;
 
 const AudioFile = ({ filePath }) => {
   const { t } = useTranslation();
@@ -16,15 +23,23 @@ const AudioFile = ({ filePath }) => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    const audioFile = filePath; ///sessionName + "/audio-record.mp4";
-    const newAudio = new Sound(audioFile, "", (error) => {
-      if (error) {
-        ToastAndroid.show(t("common:error-audio-file-load"));
-        console.error(error);
+    RNFS.exists(filePath).then((exists) => {
+      if (!exists) {
         return;
       }
 
-      setAudio(newAudio);
+      const newAudio = new Sound(filePath, "", (error) => {
+        if (error) {
+          ToastAndroid.show(
+            t("common:error-audio-file-load"),
+            ToastAndroid.SHORT
+          );
+          console.error(error);
+          return;
+        }
+
+        setAudio(newAudio);
+      });
     });
 
     return () => {
@@ -51,14 +66,17 @@ const AudioFile = ({ filePath }) => {
     });
   };
 
+  if (!audio) {
+    return null;
+  }
+
   return (
-    <Row>
-      <PrimaryButton
-        icon={<Icon type={"EvilIcons"} name={"play"} />}
-        onPress={handlePlayToggle}
-        title={"LISTEN"}
-      />
-    </Row>
+    <StyledRow>
+      <PrimaryButton onPress={handlePlayToggle}>
+        <Icon type={"EvilIcons"} name={"play"} />
+        <Text>{t('session:microphone-listen')}</Text>
+      </PrimaryButton>
+    </StyledRow>
   );
 };
 

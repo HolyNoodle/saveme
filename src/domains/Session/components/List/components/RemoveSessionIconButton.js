@@ -7,11 +7,8 @@ import { useNavigation } from "@react-navigation/core";
 import { Alert, ToastAndroid } from "react-native";
 
 // Components
-import {
-  SecondaryButton,
-  SecondaryIconButton,
-} from "../../../../../components/Layout";
-import { SecondaryLoadingIconButton } from "../../../../../components/Loader";
+import { SecondaryButton } from "../../../../../components/Layout";
+import { LoadingIcon } from "../../../../../components/Loader";
 
 // State
 import { useOvermind } from "../../../../../state";
@@ -31,7 +28,7 @@ const RemoveSessionIconButton = ({ session }) => {
     try {
       await removeSession(session);
     } catch (ex) {
-      ToastAndroid.show(t("session:remove-session-error"));
+      ToastAndroid.show(t("session:remove-session-error"), ToastAndroid.SHORT);
       console.error(ex);
     }
 
@@ -44,7 +41,7 @@ const RemoveSessionIconButton = ({ session }) => {
     setRemoving(true);
     Alert.alert(
       t("sessions:confirm-remove-title"),
-      t("sessions:confirm-remove-title"),
+      t("sessions:confirm-remove-message"),
       [
         {
           text: t("common:actions-cancel"),
@@ -62,21 +59,19 @@ const RemoveSessionIconButton = ({ session }) => {
       }
     );
   };
+  
+  const icon = !removing ? (
+    <Icon name="delete" type="MaterialIcons" />
+  ) : (
+    <LoadingIcon />
+  );
+
   return (
     <SecondaryButton
-      icon={
-        !removing ? (
-          <Icon
-            name="delete"
-            type="AntDesign"
-          />
-        ) : (
-          <SecondaryLoadingIconButton />
-        )
-      }
-      title={""}
       onPress={handlePress}
-    />
+    >
+      {icon}
+      </SecondaryButton>
   );
   return;
 };

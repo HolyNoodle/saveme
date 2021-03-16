@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Third party
+import debounce from 'lodash/debounce';
 import { View, Separator } from 'native-base';
 import { ToastAndroid } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +15,7 @@ import TimelineItem from './components/TimelineItem';
 import Loader from '../../components/Loader';
 import Recorders from './components/Recorders';
 
-const Config = ({ }) => {
+const Configuation = () => {
   const { t } = useTranslation();
   const [config, setConfig] = useState({});
   const [init, setInit] = useState(false);
@@ -32,13 +33,13 @@ const Config = ({ }) => {
     }
   }, [init]);
 
-  const handleFieldUpdate = (field) => (value) => {
+  const handleFieldUpdate = (field) => debounce((value) => {
     const newConfig = { ...config, [field]: value };
     setConfig(newConfig);
     writeConfig(newConfig).then(() => {
       ToastAndroid.show(t('config:saved'), ToastAndroid.SHORT)
     })
-  };
+  }, 500);
 
   return (
     <View>
@@ -59,4 +60,4 @@ const Config = ({ }) => {
   );
 };
 
-export default Config;
+export default Configuation;

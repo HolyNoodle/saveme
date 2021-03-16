@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from "react";
 
 // Third party
-import { View, Picker, Button, Text } from "native-base";
+import { View, Text } from "native-base";
 import { useTranslation } from "react-i18next";
+import { Picker } from "@react-native-picker/picker";
 
 // Components
 import SMSActorConfig from "./SMSActorConfig";

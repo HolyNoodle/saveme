@@ -20,7 +20,7 @@ const Session = ({ session, navigation }) => {
   const normalizedEndDate = endDate && convertJavaDateToMoment(endDate);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
+    navigation && navigation.setOptions({
       headerRight: () => <RemoveSessionIconButton session={session} />
     });
   }, [navigation]);

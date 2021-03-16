@@ -3,6 +3,7 @@ import React from "react";
 
 // Third party
 import {
+  Button,
   Icon,
   ListItem as ReactListItem,
   Switch as ReactSwitch,
@@ -33,25 +34,27 @@ export const ListItem = styled(ReactListItem)`
   padding-left: 8px;
   padding-right: 8px;
 `;
-export const PrimaryButton = styled.Button`
+export const StyledButton = styled(Button)`
+  font-size: 18px;
+  padding: 12px;
+  height: 42px;
+  border-radius: 21px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+export const PrimaryButton = styled(StyledButton)`
+  color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
   background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
 `;
 export const SecondaryButton = styled.Button`
-  background-color: ${({ theme }) => theme.SECONDARY_BUTTON_COLOR};
 `;
 export const IconButton = styled(Icon)`
   font-size: 18px;
   padding: 12px;
   width: 42px;
+  height: 42px;
   border-radius: 21px;
-`;
-export const PrimaryIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
-  background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
-`;
-export const SecondaryIconButton = styled(IconButton)`
-  color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
-  background-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
 `;
 export const Switch = ({ value, ...props }) => {
   const theme = useTheme();

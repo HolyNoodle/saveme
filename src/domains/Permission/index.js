@@ -1,91 +1,44 @@
+// React
 import React, { useEffect, useState } from "react";
 
-import { check, request, RESULTS } from "react-native-permissions";
+// Third party
+import { RESULTS } from "react-native-permissions";
 import { Button, Text } from "react-native";
+import { useOvermind } from "../../state";
 
+// Modules
 import DrawOnTopPermissionModule from "../../native-modules/DrawOnTopPermissionModule";
 
-const PermissionButton = ({ permission, onRequest }) => (
-  <Button
-    onPress={() => {
-      request(permission).then(onRequest);
-    }}
-    title={"Request permission " + permission}
-  />
-);
-
-export const PermissionSetting = ({ permission, onUpdate }) => {
-  const [state, setState] = useState();
-  useEffect(() => {
-    if (!state) {
-      check(permission).then((result) => {
-        setState(result);
-      });
-    }
-  }, [state]);
-
-  switch (state) {
-    case RESULTS.UNAVAILABLE:
-      return <Text>Not available</Text>;
-    case RESULTS.DENIED:
-      return (
-        <PermissionButton
-          permission={permission}
-          onRequest={onUpdate}
-        />
-      );
-    case RESULTS.GRANTED:
-      return null;
-    case RESULTS.BLOCKED:
-      return <Text>Blocked</Text>;
-  }
-
-  return <Text>Checking permission</Text>;
-};
+// Components
+import PermissionSetting from "./components/PermissionSetting";
 
 export const PermissionGate = ({
   permissions = [],
-  children,
-  force = false,
+  children
 }) => {
-  const [state, setState] = useState();
+  const {
+    state: { permissions: statePermissions },
+  } = useOvermind();
 
-  useEffect(() => {
-    if(!!state) {
-      return;
-    }
+  const isAuthorized = permissions.reduce(
+    (acc, permission) =>
+      acc &&
+      statePermissions[permission] &&
+      statePermissions[permission].result === RESULTS.GRANTED,
+    true
+  );
 
-    const permissionPromises = permissions.map(check);
-
-    Promise.all(permissionPromises).then((allResults) => {
-      setState(allResults);
-    });
-  }, [state, permissions]);
-
-  if (state && state.filter((s) => s !== RESULTS.GRANTED).length === 0) {
+  if (isAuthorized) {
     return children;
   }
 
-  const handlePermissionUpdate = (index) => {
-    check(permissions[index]).then(result => {
-      setState(state => {
-        const newState = [...state];
-        newState[index] = result;
-        return newState;
-      })
-    })
-  }
-
-  return (
-    force &&
-    permissions.map((permission, index) => {
-      if (state === RESULTS.GRANTED) {
-        return null;
-      }
-
-      return <PermissionSetting key={permission} permission={permission} onUpdate={() => handlePermissionUpdate(index)} />;
-    })
+  const permissionToRequest = permissions.find(
+    (permission) =>
+      !statePermissions[permission] ||
+      statePermissions[permission].result !== RESULTS.GRANTED
   );
+
+  return <PermissionSetting key={permissionToRequest} permission={permissionToRequest} />;
 };
 
 export const SpecialPermissionGate = ({ children }) => {

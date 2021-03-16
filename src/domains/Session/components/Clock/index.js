@@ -12,8 +12,8 @@ const Clock = ({ startDate, endDate }) => {
   const [, setNow] = useState(false);
   const intervalId = useRef();
 
-  if (!endDate) {
-    useEffect(() => {
+  useEffect(() => {
+    if (!endDate) {
       if (!intervalId.current) {
         intervalId.current = setInterval(function () {
           setNow((now) => !now);
@@ -25,8 +25,8 @@ const Clock = ({ startDate, endDate }) => {
           clearInterval(intervalId.current);
         }
       };
-    }, [setNow]);
-  }
+    }
+  }, [setNow, endDate]);
 
   const timeAnchor = endDate || moment();
   const diff = timeAnchor.diff(startDate);

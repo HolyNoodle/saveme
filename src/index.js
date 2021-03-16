@@ -11,7 +11,7 @@ import styled from "styled-components/native";
 //Components
 import Service from "./domains/Service";
 import SessionList from "./domains/Session/components/List";
-import Config from "./domains/Configuration";
+import Configuation from "./domains/Configuration";
 import { useTheme } from "styled-components";
 
 const Tab = createBottomTabNavigator();
@@ -58,7 +58,7 @@ const Entrypoint = ({}) => {
         />
         <Tab.Screen
           name="settings"
-          component={Config}
+          component={Configuation}
           options={{ title: t("nav:config"), tabBarIcon: SettingsIcon }}
         />
       </Tab.Navigator>

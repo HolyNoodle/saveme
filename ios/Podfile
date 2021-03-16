@@ -22,6 +22,9 @@ target 'SaveMe' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   target 'SaveMeTests' do
     inherit! :complete
     # Pods for testing

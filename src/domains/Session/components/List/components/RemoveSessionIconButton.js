@@ -7,11 +7,15 @@ import { useNavigation } from "@react-navigation/core";
 import { Alert, ToastAndroid } from "react-native";
 
 // Components
-import { SecondaryIconButton } from "../../../../../components/Layout";
+import {
+  SecondaryButton,
+  SecondaryIconButton,
+} from "../../../../../components/Layout";
 import { SecondaryLoadingIconButton } from "../../../../../components/Loader";
 
 // State
 import { useOvermind } from "../../../../../state";
+import { Icon } from "native-base";
 
 const RemoveSessionIconButton = ({ session }) => {
   const { t } = useTranslation();
@@ -58,11 +62,23 @@ const RemoveSessionIconButton = ({ session }) => {
       }
     );
   };
-  return !removing ? (
-    <SecondaryIconButton name="delete" type="AntDesign" onPress={handlePress} />
-  ) : (
-    <SecondaryLoadingIconButton />
+  return (
+    <SecondaryButton
+      icon={
+        !removing ? (
+          <Icon
+            name="delete"
+            type="AntDesign"
+          />
+        ) : (
+          <SecondaryLoadingIconButton />
+        )
+      }
+      title={""}
+      onPress={handlePress}
+    />
   );
+  return;
 };
 
 export default RemoveSessionIconButton;

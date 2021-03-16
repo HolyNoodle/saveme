@@ -86,11 +86,9 @@ const Service = ({}) => {
               permissions={[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]}
               force={true}
             >
-              <SpecialPermissionGate>
-                <Button onPress={handleStart} primary full>
-                  <Text>{t("service:start")}</Text>
-                </Button>
-              </SpecialPermissionGate>
+              <Button onPress={handleStart} primary full>
+                <Text>{t("service:start")}</Text>
+              </Button>
             </PermissionGate>
           ) : (
             <Button onPress={handleStop} danger full>

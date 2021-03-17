@@ -24,11 +24,30 @@ export const Col = styled.View`
   flex-direction: column;
 `;
 export const PrimaryText = styled.Text`
+  font-size: 18px;
   color: ${({ theme }) => theme.PRIMARY_TEXT_COLOR};
 `;
 export const SecondaryText = styled.Text`
-  color: ${({ theme }) => theme.PRIMARY_TEXT_COLOR};
+  font-size: 18px;
+  color: ${({ theme }) => theme.SECONDARY_TEXT_COLOR};
 `;
+export const ButtonText = styled(PrimaryText)`
+  font-size: 16px;
+  text-transform: uppercase;
+`;
+export const PrimaryButtonText = styled(ButtonText)`
+  color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
+`;
+export const SecondaryButtonText = styled(ButtonText)`
+  color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
+`;
+export const PrimaryGhostButtonText = styled(ButtonText)`
+  color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
+`;
+export const SecondaryGhostButtonText = styled(ButtonText)`
+  color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
+`;
+
 export const ListItem = styled(ReactListItem)`
   margin-left: 0;
   padding-left: 8px;
@@ -36,22 +55,66 @@ export const ListItem = styled(ReactListItem)`
 `;
 export const StyledButton = styled(Button)`
   height: 36px;
-  min-width: 36px;
-  border-radius: 21px;
+  border-radius: 15px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin: 0 8px;
+  padding-left: 15px;
+  padding-right: 15px;
 `;
-export const PrimaryButton = styled(StyledButton)`
+export const PrimaryButtonStyle = styled(StyledButton)`
   color: ${({ theme }) => theme.PRIMARY_BUTTON_TEXT_COLOR};
   background-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
 `;
-export const SecondaryButton = styled(StyledButton)`
+export const SecondaryButtonStyle = styled(StyledButton)`
   color: ${({ theme }) => theme.SECONDARY_BUTTON_TEXT_COLOR};
   background-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
 `;
+const IconContainer = styled.View`
+  margin: 0;
+  padding: 0;
+  margin-left:-15px;
+  margin-right: -10px;
+  transform: scale(0.85);
+`;
+export const PrimaryButton = ({ children, icon, ...props }) => (
+  <PrimaryButtonStyle {...props}>
+    {icon && <IconContainer>{icon}</IconContainer>}
+    <PrimaryButtonText>{children}</PrimaryButtonText>
+  </PrimaryButtonStyle>
+);
+export const SecondaryButton = ({ children, icon, ...props }) => (
+  <SecondaryButtonStyle {...props}>
+    {icon && <IconContainer>{icon}</IconContainer>}
+    <SecondaryButtonText>{children}</SecondaryButtonText>
+  </SecondaryButtonStyle>
+);
+export const PrimaryGhostButtonStyle = styled(StyledButton)`
+  color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
+  border-color: ${({ theme }) => theme.PRIMARY_BUTTON_BACKGROUND_COLOR};
+  border-width: 1;
+  background-color: ${({ theme }) => theme.PRIMARY_BACKGROUND_COLOR};
+`;
+
+export const SecondaryGhostButtonStyle = styled(StyledButton)`
+  color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
+  border-color: ${({ theme }) => theme.SECONDARY_BUTTON_BACKGROUND_COLOR};
+  border-width: 1;
+  background-color: ${({ theme }) => theme.PRIMARY_BACKGROUND_COLOR};
+`;
+export const GhostPrimaryButton = ({ children, icon, ...props }) => (
+  <PrimaryGhostButtonStyle {...props}>
+    {icon && <IconContainer>{icon}</IconContainer>}
+    <PrimaryGhostButtonText>{children}</PrimaryGhostButtonText>
+  </PrimaryGhostButtonStyle>
+);
+export const GhostSecondaryButton = ({ children, icon, ...props }) => (
+  <SecondaryGhostButtonStyle {...props}>
+    {icon && <IconContainer>{icon}</IconContainer>}
+    <SecondaryGhostButtonText>{children}</SecondaryGhostButtonText>
+  </SecondaryGhostButtonStyle>
+);
 export const Switch = ({ value, ...props }) => {
   const theme = useTheme();
   const inactiveColor = "rgba(180,180,180,1)";
@@ -96,7 +159,9 @@ export const AnimatedBorderView = ({ active = false, children }) => {
   });
 
   return (
-    <Animated.View style={[{ borderColor, borderWidth: 1, margin: 8, padding: 8 }]}>
+    <Animated.View
+      style={[{ borderColor, borderWidth: 1, margin: 8, padding: 8, borderRadius: 8 }]}
+    >
       {children}
     </Animated.View>
   );

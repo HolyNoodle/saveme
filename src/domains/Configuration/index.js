@@ -14,6 +14,7 @@ import EntityList from '../../components/EntityList';
 import TimelineItem from './components/TimelineItem';
 import Loader from '../../components/Loader';
 import Recorders from './components/Recorders';
+import { tail } from 'lodash';
 
 const Configuation = () => {
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ const Configuation = () => {
           <Recorders config={config} onFieldUpdate={handleFieldUpdate} />
           <Separator />
           <EntityList
-            values={config.timeline}
+            values={config.timeline.sort(({triggerTime: tA}, {triggerTime: tB}) => tA - tB)}
             onChange={handleFieldUpdate('timeline')}
             translationSuffix={'config'}
             component={TimelineItem}

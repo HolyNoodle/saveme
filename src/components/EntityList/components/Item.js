@@ -3,14 +3,17 @@ import React, { useState } from "react";
 
 // Third party
 import { useTranslation } from "react-i18next";
-import { View, Text } from "native-base";
+import { Icon, Text } from "native-base";
 import {
   AnimatedBorderView,
+  GhostSecondaryButton,
   PrimaryButton,
-  SecondaryButton,
   SpacedRow,
+  SecondaryGhostButtonText,
+  PrimaryButtonText,
 } from "../../Layout";
 import styled from "styled-components/native";
+import { Alert } from "react-native";
 
 const StyledBorderView = styled(AnimatedBorderView)`
   margin: 8px;
@@ -43,31 +46,59 @@ const EntityItem = ({
     setEditing(false);
   };
   const handleRemoveClick = () => {
-    onChange();
-    setEditing(false);
+    Alert.alert(
+      t("common:confirm-remove-title"),
+      t("common:confirm-remove-message"),
+      [
+        {
+          text: t("common:actions-cancel"),
+          onPress: () => setEditing(false),
+        },
+        {
+          text: t("common:actions-ok"),
+          onPress: () => {
+            onChange();
+            setEditing(false);
+          },
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => setEditing(false),
+        onPress: () => setEditing(false),
+      }
+    );
   };
 
   return (
-    <StyledBorderView active={editing} style={{margin: 8}}>
+    <StyledBorderView active={editing} style={{ margin: 8 }}>
       <Component edit={editing} value={item} onChange={handleItemChange} />
       {editing && (
-        <SpacedRow style={{marginTopWidth: 8, marginBottomWidth: 8}}>
-          <PrimaryButton primary onPress={handleSaveClick}>
-            <Text>{t("common:actions-save")}</Text>
+        <SpacedRow style={{ marginTopWidth: 8, marginBottomWidth: 8 }}>
+          <PrimaryButton
+            onPress={handleSaveClick}
+            icon={<Icon type={"Feather"} name={"save"} />}
+          >
+            {t("common:actions-save")}
           </PrimaryButton>
-          <SecondaryButton danger onPress={handleCancelClick}>
-            <Text>{t("common:actions-cancel")}</Text>
-          </SecondaryButton>
+          <GhostSecondaryButton onPress={handleCancelClick}>
+            <SecondaryGhostButtonText>
+              {t("common:actions-cancel")}
+            </SecondaryGhostButtonText>
+          </GhostSecondaryButton>
         </SpacedRow>
       )}
       {!editing && (
-        <SpacedRow style={{marginTopWidth: 8, marginBottomWidth: 8}}>
-          <PrimaryButton primary onPress={handleEditClick}>
-            <Text>{t("common:actions-edit")}</Text>
+        <SpacedRow style={{ marginTopWidth: 8, marginBottomWidth: 8 }}>
+          <PrimaryButton
+            onPress={handleEditClick}
+            icon={<Icon type={"Feather"} name={"edit"} />}
+          >
+            {t("common:actions-edit")}
           </PrimaryButton>
-          <SecondaryButton danger onPress={handleRemoveClick}>
-            <Text>{t("common:actions-remove")}</Text>
-          </SecondaryButton>
+          <GhostSecondaryButton onPress={handleRemoveClick}>
+            {t("common:actions-remove")}
+          </GhostSecondaryButton>
         </SpacedRow>
       )}
     </StyledBorderView>

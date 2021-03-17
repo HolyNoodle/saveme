@@ -3,14 +3,13 @@ import React from "react";
 
 // Thrid party
 import { useTranslation } from "react-i18next";
-import { Text } from "native-base";
 import styled from "styled-components";
 
 // Components
 import EditActorConfig from "./ActorConfig";
 import EditableField from "../../../components/EntityList/components/EditableField";
 import { InputNumber } from "../../../components/Form";
-import { SpacedRow, AnimatedBorderView } from "../../../components/Layout";
+import { SpacedRow, AnimatedBorderView, SecondaryText } from "../../../components/Layout";
 
 const Container = styled(AnimatedBorderView)`
   display: flex;
@@ -34,7 +33,7 @@ const TimelineItem = ({ edit, value = {}, onChange }) => {
   return (
     <>
       <SpacedRow style={{height: 50}}>
-        <Text>{t("config:trigger-time")}</Text>
+        <SecondaryText>{t("config:trigger-time")}</SecondaryText>
         <EditableField
           value={triggerTime}
           edit={edit}

@@ -1,13 +1,13 @@
 // React
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 // Third party
-import { Button, View, Text } from "native-base";
+import { Icon, View } from "native-base";
 import { useTranslation } from "react-i18next";
 
 // Components
 import EntityItem from "./components/Item";
-import { PrimaryButton } from "../Layout";
+import { PrimaryButton, PrimaryButtonText, Row } from "../Layout";
 
 const EntityList = ({
   values = [],
@@ -17,6 +17,7 @@ const EntityList = ({
 }) => {
   const { t } = useTranslation();
   const [adding, setAdding] = useState(false);
+  const instanceIds = useRef(new Map()).current;
 
   const handleAddingClick = () => {
     setAdding(true);
@@ -53,20 +54,38 @@ const EntityList = ({
         />
       )}
       {!adding && (
-        <PrimaryButton primary onPress={handleAddingClick}>
-          <Text>{t(`${translationSuffix}:entity-add`)}</Text>
-        </PrimaryButton>
+        <Row style={{margin: 8}}>
+          <PrimaryButton
+            raised
+            onPress={handleAddingClick}
+            style={{ marginTopWidth: 8, marginBottomWidth: 8 }}
+            icon={<Icon type={'AntDesign'} name={'pluscircleo'} />}
+          >
+            <PrimaryButtonText>
+              {t(`${translationSuffix}:entity-add`)}
+            </PrimaryButtonText>
+          </PrimaryButton>
+        </Row>
       )}
       {values &&
-        values.map((entity, index) => (
-          <EntityItem
-            key={index}
-            value={entity}
-            edit={false}
-            onChange={handleEditingChange(entity)}
-            component={component}
-          />
-        ))}
+        values.map((entity) => {
+          if (!instanceIds.has(entity)) {
+            var id = 0;
+            for (const m in instanceIds) ++id;
+
+            instanceIds.set(entity, id);
+          }
+
+          return (
+            <EntityItem
+              key={instanceIds.get(entity)}
+              value={entity}
+              edit={false}
+              onChange={handleEditingChange(entity)}
+              component={component}
+            />
+          );
+        })}
     </View>
   );
 };

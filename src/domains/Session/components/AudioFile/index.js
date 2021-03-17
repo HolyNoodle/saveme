@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 
 // Third party
-import { Icon, Text } from "native-base";
+import { Icon } from "native-base";
 import { ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
 import Sound from "react-native-sound";
@@ -70,13 +70,15 @@ const AudioFile = ({ filePath }) => {
     return null;
   }
 
-  const icon = isPlaying ? "stop-circle":"play-circle";
+  const icon = isPlaying ? "stop-circle" : "play-circle";
 
   return (
     <StyledRow>
-      <PrimaryButton onPress={handlePlayToggle}>
-        <Icon type={"Feather"} name={icon} />
-        <Text>{t(`session:microphone-recording`)}</Text>
+      <PrimaryButton
+        onPress={handlePlayToggle}
+        icon={<Icon type={"Feather"} name={icon} />}
+      >
+        {t(`session:microphone-recording`)}
       </PrimaryButton>
     </StyledRow>
   );

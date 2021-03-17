@@ -47,7 +47,7 @@ const Clock = ({ startDate, endDate }) => {
 
   return (
     <Container>
-      <PrimaryText style={{ fontWeight: "bold", fontSize: 14 }}>
+      <PrimaryText style={{ fontWeight: "bold", fontSize: 16 }}>
         {t("session:clock-title", {
           date: startDate && startDate.format("dddd DD MMMM YYYY"),
           time: startDate && startDate.format("HH:mm"),

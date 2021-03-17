@@ -2,14 +2,14 @@
 import React from "react";
 
 // Third party
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import { useTranslation } from "react-i18next";
 import { PERMISSIONS } from 'react-native-permissions';
 
 // Components
 import EditableField from "../../../components/EntityList/components/EditableField";
 import { InputArea, InputPhone } from "../../../components/Form";
-import { SpacedRow } from "../../../components/Layout";
+import { SecondaryText, SpacedRow } from "../../../components/Layout";
 import { PermissionGate } from "../../Permission";
 
 const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
@@ -22,7 +22,7 @@ const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
     <PermissionGate permissions={[PERMISSIONS.ANDROID.SEND_SMS]} force={true}>
       <View>
         <SpacedRow style={{height: 50}}>
-          <Text>{t("config:sms-number")}</Text>
+          <SecondaryText>{t("config:sms-number")}</SecondaryText>
           <EditableField
             editComponent={InputPhone}
             edit={edit}
@@ -30,8 +30,8 @@ const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
             onChange={handleFieldChange("number")}
           />
         </SpacedRow>
-        <View  style={{height: 100}}>
-          <Text>{t("config:sms-message")}</Text>
+        <View  style={{height: 125}}>
+          <SecondaryText>{t("config:sms-message")}</SecondaryText>
           <EditableField
             editComponent={InputArea}
             edit={edit}

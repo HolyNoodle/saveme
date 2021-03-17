@@ -3,13 +3,22 @@ import React from "react";
 
 // Thrid party
 import { useTranslation } from "react-i18next";
-import { View, Text } from "native-base";
+import { Text } from "native-base";
+import styled from "styled-components";
 
 // Components
 import EditActorConfig from "./ActorConfig";
 import EditableField from "../../../components/EntityList/components/EditableField";
 import { InputNumber } from "../../../components/Form";
-import { Row } from "../../../components/Layout";
+import { SpacedRow, AnimatedBorderView } from "../../../components/Layout";
+
+const Container = styled(AnimatedBorderView)`
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+  border-width: 1;
+  padding: 4px;
+`;
 
 const TimelineItem = ({ edit, value = {}, onChange }) => {
   const { t } = useTranslation();
@@ -23,8 +32,8 @@ const TimelineItem = ({ edit, value = {}, onChange }) => {
   };
 
   return (
-    <View>
-      <Row>
+    <>
+      <SpacedRow style={{height: 50}}>
         <Text>{t("config:trigger-time")}</Text>
         <EditableField
           value={triggerTime}
@@ -32,17 +41,15 @@ const TimelineItem = ({ edit, value = {}, onChange }) => {
           editComponent={InputNumber}
           onChange={handleFieldChange("triggerTime")}
         />
-      </Row>
-      <View styled={{ flexDirection: "row" }}>
-        <EditableField
-          value={value || {}}
-          edit={edit}
-          editComponent={EditActorConfig}
-          displayComponent={EditActorConfig}
-          onChange={handleActorChange}
-        />
-      </View>
-    </View>
+      </SpacedRow>
+      <EditableField
+        value={value || {}}
+        edit={edit}
+        editComponent={EditActorConfig}
+        displayComponent={EditActorConfig}
+        onChange={handleActorChange}
+      />
+    </>
   );
 };
 

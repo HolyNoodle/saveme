@@ -5,5 +5,10 @@
     "isDevicesRecorderEnabled": "Bluetooth et wifi",
     "saved": "Paramètres sauvegardés",
     "trigger-time": "Se déclenche après (secondes)",
-    "actor-com-saveme-session-actors-SMSActor": "SMS"
+    "actor-com-saveme-session-actors-SMSActor": "SMS",
+    "choose-actor": "Sélectionner une action",
+    "actor": "Actions",
+    "sms-number": "Numéro de téléphone",
+    "sms-message": "Message",
+    "entity-add": "Ajouter une action"
 }

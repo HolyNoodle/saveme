@@ -9,7 +9,7 @@ import { PERMISSIONS } from 'react-native-permissions';
 // Components
 import EditableField from "../../../components/EntityList/components/EditableField";
 import { InputArea, InputPhone } from "../../../components/Form";
-import { Row } from "../../../components/Layout";
+import { SpacedRow } from "../../../components/Layout";
 import { PermissionGate } from "../../Permission";
 
 const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
@@ -21,7 +21,7 @@ const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
   return (
     <PermissionGate permissions={[PERMISSIONS.ANDROID.SEND_SMS]} force={true}>
       <View>
-        <Row>
+        <SpacedRow style={{height: 50}}>
           <Text>{t("config:sms-number")}</Text>
           <EditableField
             editComponent={InputPhone}
@@ -29,8 +29,8 @@ const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
             value={number}
             onChange={handleFieldChange("number")}
           />
-        </Row>
-        <View>
+        </SpacedRow>
+        <View  style={{height: 100}}>
           <Text>{t("config:sms-message")}</Text>
           <EditableField
             editComponent={InputArea}

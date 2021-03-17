@@ -14,6 +14,7 @@ export const women = {
   PRIMARY_BUTTON_TEXT_COLOR: palette.neutral,
   SECONDARY_BUTTON_TEXT_COLOR: palette.neutral,
   ACTIVE_COLOR: palette.active,
+  INACTIVE_COLOR: palette.secondary,
   STATUS: {
     OK: '#06d6a0',
     WARN: '#f4a261',

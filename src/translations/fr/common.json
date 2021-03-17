@@ -1,7 +1,17 @@
 {
-    "permission-request": "Nous avons besoin de la permission \"{{permisson}}\"",
-    "enabled": "Activé",
-    "disabled": "Désactivé",
+  "enabled": "Activé",
+  "disabled": "Désactivé",
+  "request-permissions": "Demander les autorisations",
 
-    "long_date_format": "DD/MM/YYYY HH:mm"
+  "loading": "Chargement en cours",
+
+  "long_date_format": "DD/MM/YYYY HH:mm",
+  "actions-ok": "OK",
+  "actions-save": "Enregistrer",
+  "actions-cancel": "Annuler",
+  "actions-add": "Ajouter",
+  "actions-edit": "Modifier",
+  "actions-remove": "Supprimer",
+  "confirm-remove-title": "Suppression",
+  "confirm-remove-message": "Êtes vous sûr de vouloir supprimer cet élement ?"
 }

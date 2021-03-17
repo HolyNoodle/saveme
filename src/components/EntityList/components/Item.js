@@ -3,7 +3,19 @@ import React, { useState } from "react";
 
 // Third party
 import { useTranslation } from "react-i18next";
-import { Button, View, Text } from "native-base";
+import { View, Text } from "native-base";
+import {
+  AnimatedBorderView,
+  PrimaryButton,
+  SecondaryButton,
+  SpacedRow,
+} from "../../Layout";
+import styled from "styled-components/native";
+
+const StyledBorderView = styled(AnimatedBorderView)`
+  margin: 8px;
+  padding: 8px;
+`;
 
 const EntityItem = ({
   value,
@@ -36,29 +48,29 @@ const EntityItem = ({
   };
 
   return (
-    <View>
+    <StyledBorderView active={editing} style={{margin: 8}}>
       <Component edit={editing} value={item} onChange={handleItemChange} />
       {editing && (
-        <View>
-          <Button primary onPress={handleSaveClick}>
+        <SpacedRow style={{marginTopWidth: 8, marginBottomWidth: 8}}>
+          <PrimaryButton primary onPress={handleSaveClick}>
             <Text>{t("common:actions-save")}</Text>
-          </Button>
-          <Button danger onPress={handleCancelClick}>
+          </PrimaryButton>
+          <SecondaryButton danger onPress={handleCancelClick}>
             <Text>{t("common:actions-cancel")}</Text>
-          </Button>
-        </View>
+          </SecondaryButton>
+        </SpacedRow>
       )}
       {!editing && (
-        <View>
-          <Button primary onPress={handleEditClick}>
+        <SpacedRow style={{marginTopWidth: 8, marginBottomWidth: 8}}>
+          <PrimaryButton primary onPress={handleEditClick}>
             <Text>{t("common:actions-edit")}</Text>
-          </Button>
-          <Button danger onPress={handleRemoveClick}>
+          </PrimaryButton>
+          <SecondaryButton danger onPress={handleRemoveClick}>
             <Text>{t("common:actions-remove")}</Text>
-          </Button>
-        </View>
+          </SecondaryButton>
+        </SpacedRow>
       )}
-    </View>
+    </StyledBorderView>
   );
 };
 

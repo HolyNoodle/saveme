@@ -12,7 +12,7 @@ import EditableField from "../../../components/EntityList/components/EditableFie
 
 // Utils
 import { sanitizeClassName } from "../../../utils";
-import { Row } from "../../../components/Layout";
+import { SpacedRow } from "../../../components/Layout";
 
 const actorComponentMap = {
   "com.saveme.session.actors.SMSActor": SMSActorConfig,
@@ -21,7 +21,7 @@ const actorComponentMap = {
 const ActorPicker = ({ value, onChange }) => {
   const { t } = useTranslation();
   return (
-    <Picker selectedValue={value} onValueChange={onChange}>
+    <Picker selectedValue={value} onValueChange={onChange} style={{width:'70%'}}>
       <Picker.Item
         key={"none"}
         label={t(`config:choose-actor`)}
@@ -50,7 +50,7 @@ const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
 
   return (
     <View>
-      <Row>
+      <SpacedRow style={{height: 50}}>
         <Text>{t("config:actor")}</Text>
         <EditableField
           edit={edit}
@@ -59,7 +59,7 @@ const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
           editComponent={ActorPicker}
           displayComponent={() => <Text>{t(`config:actor-${sanitizeClassName(className)}`)}</Text>}
         />
-      </Row>
+      </SpacedRow>
 
       {ActorConfig && (
         <ActorConfig edit={edit} {...extra} onChange={setExtra} />

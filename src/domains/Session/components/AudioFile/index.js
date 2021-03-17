@@ -70,11 +70,13 @@ const AudioFile = ({ filePath }) => {
     return null;
   }
 
+  const icon = isPlaying ? "stop-circle":"play-circle";
+
   return (
     <StyledRow>
       <PrimaryButton onPress={handlePlayToggle}>
-        <Icon type={"EvilIcons"} name={"play"} />
-        <Text>{t('session:microphone-listen')}</Text>
+        <Icon type={"Feather"} name={icon} />
+        <Text>{t(`session:microphone-recording`)}</Text>
       </PrimaryButton>
     </StyledRow>
   );

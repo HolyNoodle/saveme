@@ -4,10 +4,11 @@ import React from "react";
 // Third party
 import { useTranslation } from "react-i18next";
 import { useOvermind } from "../../../state";
-import { Icon } from "native-base";
+import { Icon, Text } from "native-base";
 
 // Components
 import { PrimaryButton } from "../../../components/Layout";
+import { sanitizeClassName } from "../../../utils";
 
 const PermissionButton = ({ permission }) => {
   const { t } = useTranslation();
@@ -25,12 +26,10 @@ const PermissionButton = ({ permission }) => {
     requestPermission(permission);
   };
   return (
-    <PrimaryButton
-      disabled={loading}
-      icon={<Icon size={15} name={"security"} color={"white"} />}
-      title={t("common:request-permission", { permission })}
-      onPress={handlePermissionRequest}
-    />
+    <PrimaryButton disabled={loading} onPress={handlePermissionRequest}>
+      <Icon size={15} name={"security"} type={"MaterialIcons"} />
+      <Text>{t("common:request-permissions")}</Text>
+    </PrimaryButton>
   );
 };
 

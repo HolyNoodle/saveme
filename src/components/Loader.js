@@ -2,17 +2,15 @@
 import React, { useEffect, useRef } from "react";
 
 // Third party
-import { Icon, Text, View } from 'native-base';
-import { useTranslation } from 'react-i18next';
+import { Icon, Text, View } from "native-base";
+import { useTranslation } from "react-i18next";
 import { Animated, Easing } from "react-native";
 
 const Loader = () => {
   const { t } = useTranslation();
   return (
     <View>
-      <Text>
-        {t("common:loading")}
-      </Text>
+      <Text>{t("common:loading")}</Text>
     </View>
   );
 };
@@ -37,12 +35,16 @@ export const LoadingIcon = () => {
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
+  const scale = rotation.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0.5, 1.0, 0.5],
+  });
 
   return (
     <AnimatedIcon
-      name={"loading1"}
-      type={"AntDesign"}
-      style={{ transform: [{ rotate }] }}
+      name={"loader"}
+      type={"Feather"}
+      style={{ transform: [{ rotate }, { scale }] }}
     />
   );
 };

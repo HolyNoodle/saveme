@@ -10,7 +10,7 @@
     "sms-sent": "SMS envoyé à {{number}}",
     "sms-error": "SMS non envoyé à {{number}} : {{message}}",
     "sms-message": "Contenu :",
-    "microphone-listen": "Ecouter l'enregistrement audio", 
+    "microphone-recording": "Enregistrement audio", 
 
     "MICROPHONE_RECORDER_START": "Enregistrement du microphone",
     "MICROPHONE_RECORDER_STOP": "Fin de l'enregistrement du microphone",

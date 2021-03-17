@@ -51,7 +51,7 @@ const Configuation = () => {
           <EntityList
             values={config.timeline}
             onChange={handleFieldUpdate('timeline')}
-            translationSuffix={'actor'}
+            translationSuffix={'config'}
             component={TimelineItem}
           />
         </View>

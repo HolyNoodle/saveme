@@ -40,8 +40,8 @@ const RemoveSessionIconButton = ({ session }) => {
   const handlePress = () => {
     setRemoving(true);
     Alert.alert(
-      t("sessions:confirm-remove-title"),
-      t("sessions:confirm-remove-message"),
+      t("common:confirm-remove-title"),
+      t("common:confirm-remove-message"),
       [
         {
           text: t("common:actions-cancel"),
@@ -59,20 +59,14 @@ const RemoveSessionIconButton = ({ session }) => {
       }
     );
   };
-  
+
   const icon = !removing ? (
     <Icon name="delete" type="MaterialIcons" />
   ) : (
     <LoadingIcon />
   );
 
-  return (
-    <SecondaryButton
-      onPress={handlePress}
-    >
-      {icon}
-      </SecondaryButton>
-  );
+  return <SecondaryButton onPress={handlePress}>{icon}</SecondaryButton>;
   return;
 };
 

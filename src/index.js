@@ -7,6 +7,10 @@ import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "native-base";
 import styled from "styled-components/native";
+import moment from "moment";
+import "moment/locale/fr";
+
+moment.locale("fr");
 
 //Components
 import Service from "./domains/Service";

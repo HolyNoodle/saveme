@@ -7,7 +7,12 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components/native";
 
 // Components
-import { SecondaryIconButton, PrimaryText } from "../../../../components/Layout";
+import {
+  SecondaryIconButton,
+  PrimaryText,
+  SecondaryButton,
+} from "../../../../components/Layout";
+import { Icon } from "native-base";
 
 const StyledRow = styled.View`
   display: flex;
@@ -38,14 +43,9 @@ const Geolocation = ({ longitude, latitude }) => {
   return (
     <StyledRow>
       <PrimaryText>{t("session:geolocation")}</PrimaryText>
-      {/* <PrimaryTe<xt>{t('session:geolocation-details', {altitude, speed})}</PrimaryText> */}
-      <SecondaryIconButton
-        reversed
-        type={"Entypo"}
-        name={"location"}
-        raised
-        onPress={handlePress}
-      />
+      <SecondaryButton onPress={handlePress}>
+        <Icon type={"Entypo"} name={"location"} />
+      </SecondaryButton>
     </StyledRow>
   );
 };

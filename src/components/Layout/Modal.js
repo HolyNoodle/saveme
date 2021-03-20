@@ -64,7 +64,7 @@ const Modal = ({ children, actions, visible, ...props }) => {
   });
 
   return (
-    <ReactModal {...props} visible={visible} animationType={'slide'}>
+    <ReactModal {...props} transparent visible={visible} animationType={'slide'}>
       <StyleOverlay style={{ backgroundColor: overlayColor }}>
         <StyleModalContent>
           <Content>{children}</Content>

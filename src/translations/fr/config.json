@@ -14,6 +14,6 @@
     "sms-number-empty": "Aucun numéro",
     "sms-message-empty": "Message vide",
     "sms-default-number": "114",
-    "sms-default-message": "Je suis actuellement en détresse.\nViendez m'aider ! Ma position : #location#",
+    "sms-default-message": "Je suis actuellement en détresse.\nVenez m'aider ou appelez moi sur ce même numéro !\nMa position dernière position : #location#",
     "entity-add": "Ajouter une action"
 }

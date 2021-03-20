@@ -1,55 +1,20 @@
 // React
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
-// Contexts
-import { SessionContext } from "../../contexts";
-
-// Utils
-import { convertJavaDateToMoment } from "../../utils";
-import { getSessionAudioFilePath } from "./utils";
+// Third party
+import { createStackNavigator } from "@react-navigation/stack";
 
 // Components
-import Clock from "./components/Clock";
-import LogList from "./components/Log";
-import AudioFile from "./components/AudioFile";
-import RemoveSessionIconButton from "./components/List/components/RemoveSessionIconButton";
+import Session from "./views/Session";
+import SessionList from "./views/SessionList";
 
-const Session = ({ session, navigation }) => {
-  const { startDate, endDate } = session;
-  const normalizedStartDate = startDate && convertJavaDateToMoment(startDate);
-  const normalizedEndDate = endDate && convertJavaDateToMoment(endDate);
+const Stack = createStackNavigator();
 
-  useLayoutEffect(() => {
-    navigation && navigation.setOptions({
-      headerRight: () => <RemoveSessionIconButton session={session} />
-    });
-  }, [navigation]);
+const StackNavigationSessionList = () => (
+  <Stack.Navigator>
+    <Stack.Screen name={"list"} component={SessionList} />
+    <Stack.Screen name={"details"} component={Session} />
+  </Stack.Navigator>
+);
 
-  return (
-    <SessionContext.Provider value={session}>
-      <LogList
-        session={session}
-        ListHeaderComponent={
-          <>
-            <Clock
-              startDate={normalizedStartDate}
-              endDate={normalizedEndDate}
-            />
-            {endDate && (
-              <AudioFile filePath={getSessionAudioFilePath(session)} />
-            )}
-          </>
-        }
-      />
-    </SessionContext.Provider>
-  );
-};
-
-export const SessionScreen = ({
-  route: {
-    params: { session }
-  },
-  ...props
-}) => <Session {...props} session={session} />;
-
-export default Session;
+export default StackNavigationSessionList;

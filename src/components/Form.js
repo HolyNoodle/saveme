@@ -51,8 +51,8 @@ const TextInput = (props) => {
 
   return (
     <AnimatedStyleTextInput
-      style={[{ borderColor }]}
       {...props}
+      style={[props.style, { borderColor }]}
       onFocus={handleFocus}
       onBlur={handleBlur}
     />
@@ -70,5 +70,5 @@ export const InputPhone = (props) => (
   <TextInput {...props} keyboardType="phone-pad" />
 );
 export const InputArea = (props) => (
-  <TextInput {...props} numberOfLines={4} multiline={true} />
+  <StyleTextArea {...props} numberOfLines={4} multiline={true} />
 );

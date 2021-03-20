@@ -4,21 +4,18 @@ import React, { useEffect } from "react";
 // Third party
 import { List } from "native-base";
 import { useTranslation } from "react-i18next";
-import { createStackNavigator } from "@react-navigation/stack";
 
 // State
-import { useOvermind } from "../../../../state";
+import { useOvermind } from "../../../state";
 
 // Utils
-import { convertJavaDateToMoment } from "../../../../utils";
+import { convertJavaDateToMoment } from "../../../utils";
 
 // Components
-import Loader from "../../../../components/Loader";
-import { SessionScreen } from "../../index";
-import { SecondaryIconButton, ListItem, PrimaryText } from "../../../../components/Layout";
-import RemoveSessionIconButton from "./components/RemoveSessionIconButton";
+import Loader from "../../../components/Loader";
+import { ListItem, PrimaryText } from "../../../components/Layout";
 
-const SessionList = ({ navigation }) => {
+const SessionListScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const {
     state: {
@@ -58,13 +55,4 @@ const SessionList = ({ navigation }) => {
   );
 };
 
-const Stack = createStackNavigator();
-
-const StackNavigationSessionList = () => (
-  <Stack.Navigator>
-    <Stack.Screen name={"list"} component={SessionList} />
-    <Stack.Screen name={"details"} component={SessionScreen} />
-  </Stack.Navigator>
-);
-
-export default StackNavigationSessionList;
+export default SessionListScreen;

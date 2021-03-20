@@ -6,10 +6,12 @@ import { namespaced } from 'overmind/config'
 // State
 import sessions from '../domains/Session/state'
 import permissions from '../domains/Permission/state'
+import configuration from '../domains/Configuration/state'
 
 const config = namespaced({
   sessions,
-  permissions
+  permissions,
+  configuration
 });
 
 export const useOvermind = createHook();

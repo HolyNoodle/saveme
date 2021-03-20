@@ -3,10 +3,9 @@ import React from "react";
 // Third party
 import { H3 } from "native-base";
 import { useTranslation } from "react-i18next";
-import { check, PERMISSIONS, request, RESULTS } from "react-native-permissions";
+import { PERMISSIONS, request, RESULTS } from "react-native-permissions";
 
 // Components
-import { PermissionGate } from "../../Permission";
 import {
   ListItem,
   PrimaryText,
@@ -14,10 +13,13 @@ import {
   Switch,
 } from "../../../components/Layout";
 
+// State
+import { useOvermind } from "../../../state";
+
 const usePermissionGuard = (permissions) => (fn) => async (...args) => {
-  console.log("guard", permissions, args);
   if (args[0] === false) {
     fn(...args);
+    return;
   }
   const isGranted = await permissions.reduce(async (acc, permission) => {
     const previousResult = await acc;
@@ -36,7 +38,9 @@ const usePermissionGuard = (permissions) => (fn) => async (...args) => {
   }
 };
 
-const Recorders = ({ config, onFieldUpdate }) => {
+const Recorders = ({ configuration, onFieldUpdate }) => {
+  useOvermind();
+
   const { t } = useTranslation();
   const audioGuard = usePermissionGuard([PERMISSIONS.ANDROID.RECORD_AUDIO]);
   const geolocationGuard = usePermissionGuard([
@@ -55,7 +59,7 @@ const Recorders = ({ config, onFieldUpdate }) => {
         <SpacedRow>
           <PrimaryText>{t("config:isMicrophoneRecorderEnabled")}</PrimaryText>
           <Switch
-            value={config.isMicrophoneRecorderEnabled}
+            value={configuration.isMicrophoneRecorderEnabled}
             onValueChange={audioGuard(
               onFieldUpdate("isMicrophoneRecorderEnabled")
             )}
@@ -66,7 +70,7 @@ const Recorders = ({ config, onFieldUpdate }) => {
         <SpacedRow>
           <PrimaryText>{t("config:isGoelocationRecorderEnabled")}</PrimaryText>
           <Switch
-            value={config.isGoelocationRecorderEnabled}
+            value={configuration.isGoelocationRecorderEnabled}
             onValueChange={geolocationGuard(
               onFieldUpdate("isGoelocationRecorderEnabled")
             )}
@@ -77,7 +81,7 @@ const Recorders = ({ config, onFieldUpdate }) => {
         <SpacedRow>
           <PrimaryText>{t("config:isDevicesRecorderEnabled")}</PrimaryText>
           <Switch
-            value={config.isDevicesRecorderEnabled}
+            value={configuration.isDevicesRecorderEnabled}
             onValueChange={deviceGuard(
               onFieldUpdate("isDevicesRecorderEnabled")
             )}

@@ -14,8 +14,8 @@ moment.locale("fr");
 
 //Components
 import Service from "./domains/Service";
-import SessionList from "./domains/Session/components/List";
-import Configuation from "./domains/Configuration";
+import Session from "./domains/Session";
+import Configuration from "./domains/Configuration";
 import { useTheme } from "styled-components";
 
 const Tab = createBottomTabNavigator();
@@ -49,7 +49,7 @@ const Entrypoint = ({}) => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Tab.Navigator initialRouteName={"home"}>
+      <Tab.Navigator initialRouteName={"settings"}>
         <Tab.Screen
           name="home"
           component={Service}
@@ -57,12 +57,12 @@ const Entrypoint = ({}) => {
         />
         <Tab.Screen
           name="sessions"
-          component={SessionList}
+          component={Session}
           options={{ title: t("nav:sessions"), tabBarIcon: SessionsIcon }}
         />
         <Tab.Screen
           name="settings"
-          component={Configuation}
+          component={Configuration}
           options={{ title: t("nav:config"), tabBarIcon: SettingsIcon }}
         />
       </Tab.Navigator>

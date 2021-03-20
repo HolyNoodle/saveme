@@ -10,7 +10,7 @@ import { Switch, Route, Link, Redirect } from "react-router-native";
 // Components
 import Session from "../../domains/Session";
 import SessionList from "../../domains/Session/components/List";
-import Config from '../../domains/Configuration';
+import Configuation from '../../domains/Configuration';
 
 export const MainRouter = ({ serviceState }) => {
   const { session } = serviceState || {};
@@ -19,7 +19,7 @@ export const MainRouter = ({ serviceState }) => {
     <Switch>
       <Route path={"/current-session"} exact={true} render={() => <Session session={session} />} />
       <Route path={"/sessions"} exact={true} component={SessionList} />
-      <Route path={"/config"} exact={true} component={Config} />
+      <Route path={"/config"} exact={true} component={Configuation} />
       <Redirect to={"/sessions"} />
     </Switch>
   )

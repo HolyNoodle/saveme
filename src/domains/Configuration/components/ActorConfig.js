@@ -2,32 +2,40 @@
 import React, { useEffect, useState } from "react";
 
 // Third party
-import { View } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Picker } from "@react-native-picker/picker";
+import styled from "styled-components";
 
 // Components
-import SMSActorConfig from "./SMSActorConfig";
-import EditableField from "../../../components/EntityList/components/EditableField";
+import { SecondaryText, SpacedRow } from "../../../components/Layout";
 
 // Utils
 import { sanitizeClassName } from "../../../utils";
-import { PrimaryText, SecondaryText, SpacedRow } from "../../../components/Layout";
 
-const actorComponentMap = {
-  "com.saveme.session.actors.SMSActor": SMSActorConfig,
-};
+// Constants
+import { actorComponents } from "../constants";
+import { InputNumber } from "../../../components/Form";
+
+const ActorView = styled.View`
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+`;
 
 const ActorPicker = ({ value, onChange }) => {
   const { t } = useTranslation();
   return (
-    <Picker selectedValue={value} onValueChange={onChange} style={{width:'70%'}}>
+    <Picker
+      selectedValue={value}
+      onValueChange={onChange}
+      style={{ width: "70%" }}
+    >
       <Picker.Item
         key={"none"}
         label={t(`config:choose-actor`)}
         value={undefined}
       />
-      {Object.keys(actorComponentMap).map((key) => (
+      {Object.keys(actorComponents).map((key) => (
         <Picker.Item
           key={key}
           label={t(`config:actor-${sanitizeClassName(key)}`)}
@@ -40,31 +48,34 @@ const ActorPicker = ({ value, onChange }) => {
 
 const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
   const { t } = useTranslation();
+  const [triggerTime, setTriggerTime] = useState(value.triggerTime || "30");
   const [className, setClassName] = useState(value.className);
   const [extra, setExtra] = useState(value.extra);
-  const ActorConfig = actorComponentMap[className];
+  
+  const { form: ActorConfig, getDefaultExtra } = actorComponents[className];
 
   useEffect(() => {
-    onChange && onChange({ ...value, className, extra });
-  }, [className, extra]);
+    onChange && onChange({...value, className, extra: getDefaultExtra(t)})
+  }, [className])
+
+  useEffect(() => {
+    onChange && onChange({ ...value, triggerTime, className, extra });
+  }, [className, triggerTime, extra]);
 
   return (
-    <View>
-      <SpacedRow style={{height: 50}}>
-        <SecondaryText>{t("config:actor")}</SecondaryText>
-        <EditableField
-          edit={edit}
-          value={className}
-          onChange={setClassName}
-          editComponent={ActorPicker}
-          displayComponent={() => <PrimaryText>{t(`config:actor-${sanitizeClassName(className)}`)}</PrimaryText>}
-        />
+    <ActorView>
+      <SpacedRow style={{ height: 50 }}>
+        <ActorPicker value={className} onChange={setClassName} />
+      </SpacedRow>
+      <SpacedRow style={{ height: 50 }}>
+        <SecondaryText>{t("config:trigger-time")}</SecondaryText>
+        <InputNumber value={triggerTime} onChange={setTriggerTime} />
       </SpacedRow>
 
       {ActorConfig && (
         <ActorConfig edit={edit} {...extra} onChange={setExtra} />
       )}
-    </View>
+    </ActorView>
   );
 };
 

@@ -1,64 +1,34 @@
-import React, { useState, useEffect } from 'react';
+// React
+import React, { useEffect } from "react";
 
-// Third party
-import debounce from 'lodash/debounce';
-import { View, Separator } from 'native-base';
-import { ToastAndroid } from 'react-native';
-import { useTranslation } from 'react-i18next';
-
-// Utils
-import { readConfig, writeConfig } from '../../utils/config';
+// State
+import { useOvermind } from "../../state";
 
 // Components
-import EntityList from '../../components/EntityList';
-import TimelineItem from './components/TimelineItem';
-import Loader from '../../components/Loader';
-import Recorders from './components/Recorders';
-import { tail } from 'lodash';
+import Configuration from "./views/Configuration";
+import Loader from "../../components/Loader";
 
-const Configuation = () => {
-  const { t } = useTranslation();
-  const [config, setConfig] = useState({});
-  const [init, setInit] = useState(false);
+const ConfigurationDomain = () => {
+  const {
+    state: {
+      configuration: { invalid, loading },
+    },
+    actions: {
+      configuration: { readConfiguration },
+    },
+  } = useOvermind();
 
   useEffect(() => {
-    if (!init) {
-      readConfig()
-        .then(file => {
-          setConfig(JSON.parse(file));
-        })
-        .catch(() => setConfig({}))
-        .finally(() => {
-          setInit(true);
-        });
+    if (invalid) {
+        readConfiguration();
     }
-  }, [init]);
+  }, [invalid]);
 
-  const handleFieldUpdate = (field) => debounce((value) => {
-    const newConfig = { ...config, [field]: value };
-    setConfig(newConfig);
-    writeConfig(newConfig).then(() => {
-      ToastAndroid.show(t('config:saved'), ToastAndroid.SHORT)
-    })
-  }, 500);
-
-  return (
-    <View>
-      {!init && <Loader />}
-      {init && (
-        <View>
-          <Recorders config={config} onFieldUpdate={handleFieldUpdate} />
-          <Separator />
-          <EntityList
-            values={config.timeline.sort(({triggerTime: tA}, {triggerTime: tB}) => tA - tB)}
-            onChange={handleFieldUpdate('timeline')}
-            translationSuffix={'config'}
-            component={TimelineItem}
-          />
-        </View>
-      )}
-    </View>
+  return loading ? (
+    <Loader />
+  ) : (
+    <Configuration />
   );
 };
 
-export default Configuation;
+export default ConfigurationDomain;

@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 // Third party
 import { Icon, View } from "native-base";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
 // Components
 import EntityItem from "./components/Item";
@@ -36,8 +37,11 @@ const EntityList = ({
     }
 
     onChange(newValues);
+    setAdding(false);
   };
   const handleAddChange = (entity) => {
+    entity.id = moment().valueOf();
+
     if (entity !== null) {
       onChange([...values, entity]);
     }
@@ -54,12 +58,12 @@ const EntityList = ({
         />
       )}
       {!adding && (
-        <Row style={{margin: 8}}>
+        <Row style={{ margin: 8 }}>
           <PrimaryButton
             raised
             onPress={handleAddingClick}
             style={{ marginTopWidth: 8, marginBottomWidth: 8 }}
-            icon={<Icon type={'AntDesign'} name={'pluscircleo'} />}
+            icon={<Icon type={"AntDesign"} name={"pluscircleo"} />}
           >
             <PrimaryButtonText>
               {t(`${translationSuffix}:entity-add`)}
@@ -68,24 +72,15 @@ const EntityList = ({
         </Row>
       )}
       {values &&
-        values.map((entity) => {
-          if (!instanceIds.has(entity)) {
-            var id = 0;
-            for (const m in instanceIds) ++id;
-
-            instanceIds.set(entity, id);
-          }
-
-          return (
-            <EntityItem
-              key={instanceIds.get(entity)}
-              value={entity}
-              edit={false}
-              onChange={handleEditingChange(entity)}
-              component={component}
-            />
-          );
-        })}
+        values.map((entity) => (
+          <EntityItem
+            key={entity.id}
+            value={entity}
+            edit={false}
+            onChange={handleEditingChange(entity)}
+            component={component}
+          />
+        ))}
     </View>
   );
 };

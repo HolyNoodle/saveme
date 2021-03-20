@@ -2,17 +2,26 @@
 import React from "react";
 
 // Third party
-import { View } from "native-base";
+import { Icon, View } from "native-base";
 import { useTranslation } from "react-i18next";
-import { PERMISSIONS } from 'react-native-permissions';
+import { PERMISSIONS } from "react-native-permissions";
+import styled from "styled-components";
 
 // Components
-import EditableField from "../../../components/EntityList/components/EditableField";
 import { InputArea, InputPhone } from "../../../components/Form";
-import { SecondaryText, SpacedRow } from "../../../components/Layout";
+import { PrimaryText, Row, SecondaryText } from "../../../components/Layout";
 import { PermissionGate } from "../../Permission";
 
-const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
+const PhoneIcon = styled(Icon)`
+  width: 10%;
+  transform: scale(0.85);
+  margin-right: -10px;
+`;
+const Phone = styled(InputPhone)`
+  width: 90%;
+`;
+
+const SMSActorConfig = ({ message, number, onChange }) => {
   const { t } = useTranslation();
   const handleFieldChange = (field) => (value) => {
     onChange({ message, number, [field]: value });
@@ -20,27 +29,39 @@ const SMSActorConfig = ({ edit = false, message, number, onChange }) => {
 
   return (
     <PermissionGate permissions={[PERMISSIONS.ANDROID.SEND_SMS]} force={true}>
-      <View>
-        <SpacedRow style={{height: 50}}>
-          <SecondaryText>{t("config:sms-number")}</SecondaryText>
-          <EditableField
-            editComponent={InputPhone}
-            edit={edit}
-            value={number}
-            onChange={handleFieldChange("number")}
-          />
-        </SpacedRow>
-        <View  style={{height: 125}}>
-          <SecondaryText>{t("config:sms-message")}</SecondaryText>
-          <EditableField
-            editComponent={InputArea}
-            edit={edit}
-            value={message}
-            onChange={handleFieldChange("message")}
-          />
-        </View>
+      <Row>
+        <PhoneIcon type={"AntDesign"} name={"phone"} />
+        <Phone
+          value={number}
+          placeholder={t("config:sms-number")}
+          onChange={handleFieldChange("number")}
+        />
+      </Row>
+      <View style={{ marginTop: 18 }}>
+        <SecondaryText>{t("config:sms-message")}</SecondaryText>
+        <InputArea value={message} onChange={handleFieldChange("message")} />
       </View>
     </PermissionGate>
+  );
+};
+
+export const SMSActorDetails = ({ message, number }) => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <PrimaryText size={"small"}>
+        {number || t("config:sms-number-empty")}
+      </PrimaryText>
+      <SecondaryText
+        numberOfLines={1}
+        ellipsizeMode={"tail"}
+        size={"small"}
+        style={{ flex: 1, marginLeft: 5 }}
+      >
+        {message || t("config:sms-message-empty")}
+      </SecondaryText>
+    </>
   );
 };
 

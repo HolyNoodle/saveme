@@ -5,14 +5,14 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/core";
 import { Alert, ToastAndroid } from "react-native";
+import { Icon } from "native-base";
 
 // Components
-import { SecondaryButton } from "../../../../../components/Layout";
-import { LoadingIcon } from "../../../../../components/Loader";
+import { SecondaryButton } from "../../../../components/Layout";
+import { LoadingIcon } from "../../../../components/Loader";
 
 // State
-import { useOvermind } from "../../../../../state";
-import { Icon } from "native-base";
+import { useOvermind } from "../../../../state";
 
 const RemoveSessionIconButton = ({ session }) => {
   const { t } = useTranslation();
@@ -67,7 +67,6 @@ const RemoveSessionIconButton = ({ session }) => {
   );
 
   return <SecondaryButton onPress={handlePress}>{icon}</SecondaryButton>;
-  return;
 };
 
 export default RemoveSessionIconButton;

@@ -5,10 +5,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/core";
 import { Alert, ToastAndroid } from "react-native";
-import { Icon } from "native-base";
 
 // Components
-import { SecondaryButton } from "../../../../components/Layout";
+import { SecondaryButton, SecondaryButtonIcon } from "../../../../components/Layout";
 import { LoadingIcon } from "../../../../components/Loader";
 
 // State
@@ -61,12 +60,12 @@ const RemoveSessionIconButton = ({ session }) => {
   };
 
   const icon = !removing ? (
-    <Icon name="delete" type="MaterialIcons" />
+    <SecondaryButtonIcon name="delete" type="MaterialIcons" />
   ) : (
     <LoadingIcon />
   );
 
-  return <SecondaryButton onPress={handlePress}>{icon}</SecondaryButton>;
+  return <SecondaryButton onPress={handlePress} icon={icon} style={{marginRight: 5}} />;
 };
 
 export default RemoveSessionIconButton;

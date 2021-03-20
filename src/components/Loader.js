@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Icon, Text, View } from "native-base";
 import { useTranslation } from "react-i18next";
 import { Animated, Easing } from "react-native";
+import { PrimaryButtonIcon } from "./Layout";
 
 const Loader = () => {
   const { t } = useTranslation();
@@ -15,9 +16,8 @@ const Loader = () => {
   );
 };
 
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
-
-export const LoadingIcon = () => {
+export const LoadingIcon = ({component: IconComponent = PrimaryButtonIcon}) => {
+  const AnimatedIcon = Animated.createAnimatedComponent(IconComponent);
   const rotation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {

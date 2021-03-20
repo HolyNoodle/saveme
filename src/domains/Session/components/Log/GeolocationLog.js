@@ -4,24 +4,14 @@ import React, { useCallback } from "react";
 // Third party
 import { Linking, ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
-import styled from "styled-components/native";
 
 // Components
 import {
-  SecondaryIconButton,
   PrimaryText,
   SecondaryButton,
+  SecondaryButtonIcon,
+  SpacedRow,
 } from "../../../../components/Layout";
-import { Icon } from "native-base";
-
-const StyledRow = styled.View`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  padding-right: 10px;
-`;
 
 const Geolocation = ({ longitude, latitude }) => {
   const { t } = useTranslation();
@@ -41,12 +31,13 @@ const Geolocation = ({ longitude, latitude }) => {
   }, [url]);
 
   return (
-    <StyledRow>
+    <SpacedRow>
       <PrimaryText>{t("session:geolocation")}</PrimaryText>
-      <SecondaryButton onPress={handlePress}>
-        <Icon type={"Entypo"} name={"location"} />
-      </SecondaryButton>
-    </StyledRow>
+      <SecondaryButton
+        onPress={handlePress}
+        icon={<SecondaryButtonIcon type={"Entypo"} name={"location"} />}
+      />
+    </SpacedRow>
   );
 };
 

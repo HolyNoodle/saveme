@@ -11,7 +11,7 @@ import EntityItem from './components/Item';
 import {PrimaryButton, Row} from '../Layout';
 
 // Types
-import {EntityList as EntityListProps, ObjectWithId} from './types';
+import { EntityListProps, ObjectWithId} from './types';
 
 const EntityList: FunctionComponent<EntityListProps> = ({
   values = [],

@@ -15,7 +15,7 @@ import {
 } from "../../Layout";
 
 // Types
-import { EntityItem as EntityItemProps, ObjectWithId } from "../types";
+import { EntityItemProps, ObjectWithId } from "../types";
 
 const StyledBorderView = styled(AnimatedBorderView)`
   margin: 8px;

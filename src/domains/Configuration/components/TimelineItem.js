@@ -28,7 +28,7 @@ const TimelineItem = ({ edit: modalVisible, value = {}, onChange }) => {
   const { t } = useTranslation();
   const theme = useTheme();
   const [actorConfiguraton, setActorConfiguration] = useState(value);
-  const { className, triggerTime = "30", extra = {} } = actorConfiguraton;
+  const { className, triggerTime = "30", extra } = actorConfiguraton;
 
   const handleActorSave = () => {
     onChange({ ...value, ...actorConfiguraton });

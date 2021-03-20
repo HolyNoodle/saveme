@@ -49,7 +49,7 @@ const Entrypoint = ({}) => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
-      <Tab.Navigator initialRouteName={"settings"}>
+      <Tab.Navigator initialRouteName={"home"}>
         <Tab.Screen
           name="home"
           component={Service}

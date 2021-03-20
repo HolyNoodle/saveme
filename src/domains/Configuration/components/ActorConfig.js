@@ -30,12 +30,7 @@ const ActorPicker = ({ value, onChange }) => {
       onValueChange={onChange}
       style={{ width: "70%" }}
     >
-      <Picker.Item
-        key={"none"}
-        label={t(`config:choose-actor`)}
-        value={undefined}
-      />
-      {Object.keys(actorComponents).map((key) => (
+      {Object.keys(actorComponents).map((key) => key && (
         <Picker.Item
           key={key}
           label={t(`config:actor-${sanitizeClassName(key)}`)}
@@ -51,12 +46,17 @@ const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
   const [triggerTime, setTriggerTime] = useState(value.triggerTime || "30");
   const [className, setClassName] = useState(value.className);
   const [extra, setExtra] = useState(value.extra);
-  
+
   const { form: ActorConfig, getDefaultExtra } = actorComponents[className];
 
   useEffect(() => {
-    onChange && onChange({...value, className, extra: getDefaultExtra(t)})
-  }, [className])
+    onChange &&
+      onChange({
+        ...value,
+        className,
+        extra: getDefaultExtra ? getDefaultExtra(t) : {},
+      });
+  }, [className]);
 
   useEffect(() => {
     onChange && onChange({ ...value, triggerTime, className, extra });

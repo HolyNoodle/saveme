@@ -7,7 +7,7 @@
     "saved-error": "Erreur lors de la sauvegarde des paramètres",
     "trigger-time": "Se déclenche après (secondes)",
     "actor-com-saveme-session-actors-SMSActor": "Envoyer un SMS",
-    "choose-actor": "Sélectionner une action",
+    "actor-undefined": "Sélectionner une action",
     "actor": "Actions",
     "sms-number": "Numéro de téléphone",
     "sms-message": "Message",

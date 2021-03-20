@@ -47,16 +47,7 @@ const EditableActorConfig = ({ edit = false, value = {}, onChange }) => {
   const [className, setClassName] = useState(value.className);
   const [extra, setExtra] = useState(value.extra);
 
-  const { form: ActorConfig, getDefaultExtra } = actorComponents[className];
-
-  useEffect(() => {
-    onChange &&
-      onChange({
-        ...value,
-        className,
-        extra: getDefaultExtra ? getDefaultExtra(t) : {},
-      });
-  }, [className]);
+  const { form: ActorConfig } = actorComponents[className];
 
   useEffect(() => {
     onChange && onChange({ ...value, triggerTime, className, extra });

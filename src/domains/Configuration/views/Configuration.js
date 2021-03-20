@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 // Third party
 import debounce from "lodash/debounce";
-import { View, Separator } from "native-base";
+import { View } from "native-base";
 import { ToastAndroid } from "react-native";
 import { useTranslation } from "react-i18next";
-
-// Utils
-import { readConfig, writeConfig } from "../../../utils/config";
 
 // State
 import { useOvermind } from "../../../state";
@@ -15,7 +12,6 @@ import { useOvermind } from "../../../state";
 // Components
 import EntityList from "../../../components/EntityList";
 import TimelineItem from "../components/TimelineItem";
-import Loader from "../../../components/Loader";
 import Recorders from "../components/Recorders";
 
 const Configuation = () => {
@@ -29,7 +25,7 @@ const Configuation = () => {
     },
   } = useOvermind();
 
-  const handleFieldUpdate = (field) => async (value) => {
+  const handleFieldUpdate = (field) => debounce(async (value) => {
     try {
       await writeConfiguration({ [field]: value });
 
@@ -38,7 +34,7 @@ const Configuation = () => {
       console.error("ERROR while writing configuration", ex);
       ToastAndroid.show(t("config:saved-error"), ToastAndroid.SHORT);
     }
-  };
+  }, 500);
 
   const { timeline = [] } = configuration;
 

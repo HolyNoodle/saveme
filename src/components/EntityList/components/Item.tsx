@@ -48,19 +48,16 @@ const EntityItem: FunctionComponent<EntityItemProps> = ({
       [
         {
           text: t("common:actions-cancel"),
-          onPress: () => setEditing(false),
         },
         {
           text: t("common:actions-ok"),
           onPress: () => {
             onChange();
-            setEditing(false);
           },
         },
       ],
       {
-        cancelable: true,
-        onDismiss: () => setEditing(false),        
+        cancelable: true
       }
     );
   };

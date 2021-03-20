@@ -73,8 +73,45 @@ describe('EntityItem', () => {
       edit: true,
     });
   });
-  
-  it('Should render remove button', () => {
+
+
+  it('Should trigger onChange when component changed', () => {
+    const TestComponent = sandbox.stub().callsFake(() => null);
+    const onChange = sandbox.stub();
+    const item = {id: 'truc'};
+    const newItem = {id: 'autre'};
+
+    const testRenderer = TestRenderer.create(
+      <ThemeProvider theme={themes.women}>
+        <EntityItem value={item} component={TestComponent} onChange={onChange} />
+      </ThemeProvider>,
+    );
+
+    const instance = testRenderer.root.findByType(TestComponent);
+    const editInstance = testRenderer.root.findByType(TouchableHighlight);
+
+    TestRenderer.act(() => {
+      editInstance.props.onPress();
+    });
+
+    expect(instance.props).toMatchObject({
+      value: item,
+      edit: true,
+    });
+
+    TestRenderer.act(() => {
+      instance.props.onChange(newItem);
+    });
+
+    expect(onChange.calledOnce).toBeTruthy();
+    expect(onChange.calledWith(newItem)).toBeTruthy();
+    expect(instance.props).toMatchObject({
+      value: newItem,
+      edit: false,
+    });
+  });
+
+  it('Should render remove button, trigger confirmation and finally trigger onChange with no argument', () => {
     const TestComponent = sandbox.stub().callsFake(() => null);
     const onChange = sandbox.stub();
     const item = {id: 'truc'};
@@ -87,6 +124,11 @@ describe('EntityItem', () => {
     );
 
     const instance = testRenderer.root.findByType(GhostSecondaryButton);
+    const editInstance = testRenderer.root.findByType(TouchableHighlight);
+
+    TestRenderer.act(() => {
+      editInstance.props.onPress();
+    });
 
     expect(instance).toBeDefined();
     expect(alertSpy.notCalled).toBeTruthy();
@@ -94,5 +136,15 @@ describe('EntityItem', () => {
     instance.props.onPress();
 
     expect(alertSpy.calledOnce).toBeTruthy();
+    
+    const [cancel, confirm] = alertSpy.getCall(0).args[2] as Array<any>;
+
+    expect(cancel).not.toHaveProperty('onPress');
+    expect(onChange.notCalled).toBeTruthy();
+
+    confirm.onPress();
+
+    expect(onChange.calledOnce).toBeTruthy();
+    expect(onChange.calledWithExactly()).toBeTruthy();
   });
 });

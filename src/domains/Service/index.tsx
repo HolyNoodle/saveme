@@ -1,104 +1,31 @@
 // React
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 // Third party
-import {
-  Container,
-  Text,
-  Button,
-  Footer,
-  Content,
-  FooterTab,
-} from "native-base";
+import { createStackNavigator } from "@react-navigation/stack";
 import { useTranslation } from "react-i18next";
-import { PERMISSIONS } from "react-native-permissions";
-
-// Services
-import EmergencyNotification from "../../native-modules/EmergencyNotification";
 
 // Components
-import { PermissionGate } from "../Permission";
-import Session from "../Session";
-import { useOvermind } from "../../state";
+import Session from "./views/CurrentSession";
+import Service from "./views/Service";
 
-const Service = ({}) => {
-  const { t } = useTranslation();
-  const [serviceState, setServiceState] = useState();
-  const {
-    actions: {
-      sessions: { invalidateSessions },
-    },
-  } = useOvermind();
-  const { started = false, session } = serviceState || {};
+const Stack = createStackNavigator();
 
-  useEffect(() => {
-    const callback = (json) => {
-      const newServiceState = JSON.parse(json);
-
-      setServiceState((serviceState) => {
-        const wasInSession =
-          serviceState &&
-          (serviceState.mode === "HELP" || serviceState.mode === "EMERGENCY");
-        const isNotInSession =
-          newServiceState.mode === "INACTIVE" ||
-          newServiceState.mode === "LISTENING";
-
-        wasInSession && isNotInSession && invalidateSessions();
-
-        if (
-          !serviceState ||
-          serviceState.started != newServiceState.started ||
-          serviceState.mode != newServiceState.mode ||
-          newServiceState.session
-        ) {
-          return newServiceState;
-        }
-
-        return serviceState;
-      });
-    };
-
-    const interval = setInterval(() => {
-      EmergencyNotification.refreshState(callback);
-    }, 500);
-
-    EmergencyNotification.refreshState(callback);
-
-    return () => clearInterval(interval);
-  }, [setServiceState]);
-
-  const handleStart = () => {
-    EmergencyNotification.startService();
-  };
-  const handleStop = () => {
-    EmergencyNotification.stopService();
-  };
-
+const StackNavigationService = () => {
+  const {t} = useTranslation();
+  
   return (
-    <Container>
-      <Content>
-        {session ? <Session session={session} /> : <Text>TBD</Text>}
-      </Content>
-      <Footer>
-        <FooterTab>
-          {!started ? (
-            <PermissionGate
-              permissions={[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]}
-              force={true}
-            >
-              <Button onPress={handleStart} primary full>
-                <Text>{t("service:start")}</Text>
-              </Button>
-            </PermissionGate>
-          ) : (
-            <Button onPress={handleStop} danger full>
-              <Text>{t("service:stop")}</Text>
-            </Button>
-          )}
-        </FooterTab>
-      </Footer>
-    </Container>
+    <Stack.Navigator>
+      <Stack.Screen
+        name={"service"}
+        component={Service}
+        options={{ title: t("nav:home") }} />
+      <Stack.Screen
+        name={"current-session"}
+        component={Session}
+        options={{ title: t("nav:current-session") }} />
+    </Stack.Navigator>
   );
 };
 
-export default Service;
+export default StackNavigationService;

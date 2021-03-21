@@ -7,11 +7,13 @@ import { namespaced } from 'overmind/config'
 import sessions from '../domains/Session/state'
 import permissions from '../domains/Permission/state'
 import configuration from '../domains/Configuration/state'
+import service from '../domains/Service/state'
 
 const config = namespaced({
   sessions,
   permissions,
-  configuration
+  configuration,
+  service
 });
 
 export type Configuration = IConfig<{

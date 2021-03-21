@@ -1,6 +1,9 @@
 // React
 import React, {useLayoutEffect} from 'react';
 
+// Third party
+import moment from 'moment';
+
 // Contexts
 import {SessionContext} from '../../../contexts';
 
@@ -15,7 +18,9 @@ import RemoveSessionIconButton from './RemoveSessionIconButton';
 
 // Types
 import {Session as SessionType} from 'src/types';
-import moment from 'moment';
+
+// State
+import { useOvermind } from '../../../state';
 
 const getSessionAudioFilePath = ({sessionName}: SessionType) =>
   sessionName + '/audio-record.mp4';
@@ -28,16 +33,18 @@ const Session: React.FunctionComponent<SessionProps> = ({
   session,
   navigation,
 }) => {
+  useOvermind();
+  
   const {startDate, endDate} = session;
   const normalizedStartDate = startDate && convertJavaDateToMoment(startDate) || moment();
   const normalizedEndDate = endDate && convertJavaDateToMoment(endDate) || moment();
 
   useLayoutEffect(() => {
-    navigation &&
+    navigation && endDate &&
       navigation.setOptions({
         headerRight: () => <RemoveSessionIconButton session={session} />,
       });
-  }, [navigation]);
+  }, [navigation, endDate]);
 
   return (
     <SessionContext.Provider value={session}>

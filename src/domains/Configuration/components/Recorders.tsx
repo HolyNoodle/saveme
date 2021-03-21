@@ -52,7 +52,6 @@ const Recorders: React.FunctionComponent<RecordersProps> = ({configuration, onFi
   const geolocationGuard = usePermissionGuard([
     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
     PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
-    PERMISSIONS.ANDROID.ACCESS_BACKGROUND_LOCATION,
   ]);
   const deviceGuard = usePermissionGuard([
     PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,

@@ -7,19 +7,17 @@ import android.location.LocationManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
-import com.saveme.session.actors.IActor;
 import com.saveme.session.configuration.Config;
 import com.saveme.session.configuration.TimelineActorConfig;
 import com.saveme.session.log.ErrorLog;
-import com.saveme.session.recorders.GeolocationRecorder;
+import com.saveme.session.recorders.geolocation.GeolocationRecorder;
 import com.saveme.session.recorders.IRecorder;
 import com.saveme.session.recorders.MicrophoneRecorder;
+import com.saveme.session.recorders.geolocation.GeolocationService;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +47,7 @@ public class Session {
         this.config = config;
     }
 
-    public void start(Service parent) {
+    public void start(Service parent, GeolocationService geolocationService) {
         logger = new Logger();
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         String dateString = df.format(new Date());
@@ -59,7 +57,7 @@ public class Session {
         directory.mkdirs();
 
         startDate = new Date();
-        this.startRecorders(parent);
+        this.startRecorders(geolocationService);
         this.startTimeline();
     }
 
@@ -70,24 +68,25 @@ public class Session {
         endDate = new Date();
 
         File file = new File(sessionName, "session.json");
-        file.createNewFile();
-        FileOutputStream stream = new FileOutputStream(file);
-        try {
-            Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-            stream.write(gson.toJson(this).getBytes());
-        } finally {
-            stream.close();
+        if(file.createNewFile()) {
+            FileOutputStream stream = new FileOutputStream(file);
+            try {
+                Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+                stream.write(gson.toJson(this).getBytes());
+            } finally {
+                stream.close();
+            }
         }
     }
 
-    private void startRecorders(Service parent) {
+    private void startRecorders(GeolocationService geolocationService) {
         recorders = new ArrayList<>();
 
         MicrophoneRecorder micRecorder = new MicrophoneRecorder();
         micRecorder.setFileName(sessionName);
         recorders.add(micRecorder);
 
-        recorders.add(new GeolocationRecorder((LocationManager) parent.getSystemService(Context.LOCATION_SERVICE)));
+        recorders.add(new GeolocationRecorder(geolocationService));
 
         try {
             for (IRecorder recorder : recorders) {

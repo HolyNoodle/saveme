@@ -1,6 +1,8 @@
-package com.saveme.session.recorders;
+package com.saveme.session.recorders.geolocation;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
+import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -12,18 +14,20 @@ import com.saveme.session.configuration.Config;
 import com.saveme.session.log.EventLog;
 import com.saveme.session.log.GeolocationLog;
 
-public class GeolocationRecorder implements IRecorder, LocationListener {
+public class GeolocationService implements LocationListener {
     private LocationManager locationManager = null;
-    private String fileName = null;
     private String provider = null;
-    private Logger logger = null;
+    private Location location = null;
 
-    public GeolocationRecorder(LocationManager locationManager) {
-        this.locationManager = locationManager;
+    private IGeolocationListener listener = null;
+
+    public GeolocationService(Service owner) {
+        this.locationManager = (LocationManager) owner.getSystemService(Context.LOCATION_SERVICE);
+
         Criteria criteria = new Criteria();
-        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        int currentAPIVersion = android.os.Build.VERSION.SDK_INT;
 
-        if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             criteria.setSpeedAccuracy(Criteria.ACCURACY_LOW);
             criteria.setAccuracy(Criteria.ACCURACY_FINE);
             criteria.setAltitudeRequired(true);
@@ -31,12 +35,30 @@ public class GeolocationRecorder implements IRecorder, LocationListener {
             criteria.setSpeedRequired(true);
         }
 
-        provider = locationManager.getBestProvider(criteria, true);
+        this.provider = locationManager.getBestProvider(criteria, true);
+    }
+
+    private void triggerLocationEvent() {
+        if(this.listener != null && this.location != null) {
+            this.listener.onUpdate(this.location);
+        }
+    }
+
+    public void setListener(IGeolocationListener listener) {
+        this.listener = listener;
+
+        this.triggerLocationEvent();
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        logger.pushLog(new GeolocationLog(location));
+        if(this.location == location) {
+            return;
+        }
+
+        this.location = location;
+
+        this.triggerLocationEvent();
     }
 
     @Override
@@ -54,21 +76,11 @@ public class GeolocationRecorder implements IRecorder, LocationListener {
     }
 
     @SuppressLint("MissingPermission")
-    @Override
-    public void start(Logger logger) {
-        this.logger = logger;
-        logger.pushLog(new EventLog("GEOLOCATION_RECORDER_START"));
+    public void start() {
         locationManager.requestLocationUpdates(provider, 60 * 1000, 10, this);
     }
 
-    @Override
     public void stop() {
-        logger.pushLog(new EventLog("GEOLOCATION_RECORDER_STOP"));
         locationManager.removeUpdates(this);
-    }
-
-    @Override
-    public boolean isEnabled(Config config) {
-        return config.isGoelocationRecorderEnabled();
     }
 }

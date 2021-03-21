@@ -11,7 +11,7 @@ import Loader from "../../components/Loader";
 const ConfigurationDomain = () => {
   const {
     state: {
-      configuration: { invalid, loading },
+      configuration: { invalid },
     },
     actions: {
       configuration: { readConfiguration },
@@ -24,7 +24,7 @@ const ConfigurationDomain = () => {
     }
   }, [invalid]);
 
-  return loading ? (
+  return invalid ? (
     <Loader />
   ) : (
     <Configuration />

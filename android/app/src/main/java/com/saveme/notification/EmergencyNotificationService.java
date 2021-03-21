@@ -12,24 +12,24 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
-import com.facebook.flipper.plugins.databases.ObjectMapper;
 import com.google.gson.Gson;
 import com.saveme.MainActivity;
 import com.saveme.R;
 import com.saveme.session.Session;
 import com.saveme.session.configuration.Config;
+import com.saveme.session.recorders.geolocation.GeolocationService;
 import com.saveme.volume.EmergencyTriggerService;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class EmergencyNotificationService extends Service {
     private static final int SERVICE_NOTIFICATION_ID = 3658794;
     private static final String CHANNEL_ID = "SAVEME";
     private static Notification notification;
+
+    private static GeolocationService geolocationService;
 
     private static final NotificationServiceState state = new NotificationServiceState();
 
@@ -62,6 +62,11 @@ public class EmergencyNotificationService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        if(geolocationService != null) {
+            geolocationService.stop();
+            geolocationService = null;
+        }
 
         stopService(new Intent(this, EmergencyTriggerService.class));
 
@@ -109,6 +114,11 @@ public class EmergencyNotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Bundle extras = intent.getExtras();
 
+        if(geolocationService == null) {
+            geolocationService = new GeolocationService(this);
+            geolocationService.start();
+        }
+
         boolean isEmergencyTriggered = extras != null;
         if (isEmergencyTriggered) {
             NotificationMode notificationMode = NotificationMode.valueOf(extras.getString("GESTURE_TRIGGERED"));
@@ -123,7 +133,7 @@ public class EmergencyNotificationService extends Service {
                 Config config = this.getConfig();
 
                 state.session = new Session(config);
-                state.session.start(this);
+                state.session.start(this, geolocationService);
 
                 Intent newIntent = new Intent(getApplicationContext(), MainActivity.class);
                 newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

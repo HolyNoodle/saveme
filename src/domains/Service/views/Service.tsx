@@ -1,50 +1,44 @@
 // React
-import React, { useState, useEffect } from "react";
+import React, {useEffect} from 'react';
 
 // Third party
-import {
-  Container,
-  Text,
-  Button,
-  Footer,
-  Content,
-  FooterTab,
-} from "native-base";
-import { useTranslation } from "react-i18next";
-import { PERMISSIONS } from "react-native-permissions";
+import {Container, Text, Button, Footer, Content, FooterTab} from 'native-base';
+import {useTranslation} from 'react-i18next';
+import {PERMISSIONS} from 'react-native-permissions';
 
 // Services
-import EmergencyNotification from "../../native-modules/EmergencyNotification";
+import EmergencyNotification from '../../../native-modules/EmergencyNotification';
 
 // Components
-import { PermissionGate } from "../Permission";
-import Session from "../Session";
-import { useOvermind } from "../../state";
+import {PermissionGate} from '../../Permission';
 
-const Service = ({}) => {
-  const { t } = useTranslation();
-  const [serviceState, setServiceState] = useState();
+// State
+import {useOvermind} from '../../../state';
+
+// Types
+import {ServiceState} from '../types';
+
+interface ServiceProps {
+  navigation: any;
+}
+
+const Service: React.FunctionComponent<ServiceProps> = ({navigation}) => {
+  const {t} = useTranslation();
   const {
+    state: {
+      service: serviceState,
+    },
     actions: {
-      sessions: { invalidateSessions },
+      service: {setService},
     },
   } = useOvermind();
-  const { started = false, session } = serviceState || {};
+  const {started = false, session} = serviceState || {};
 
   useEffect(() => {
-    const callback = (json) => {
+    const callback = (json: string) => {
       const newServiceState = JSON.parse(json);
 
-      setServiceState((serviceState) => {
-        const wasInSession =
-          serviceState &&
-          (serviceState.mode === "HELP" || serviceState.mode === "EMERGENCY");
-        const isNotInSession =
-          newServiceState.mode === "INACTIVE" ||
-          newServiceState.mode === "LISTENING";
-
-        wasInSession && isNotInSession && invalidateSessions();
-
+      setService((serviceState: ServiceState) => {
         if (
           !serviceState ||
           serviceState.started != newServiceState.started ||
@@ -65,7 +59,7 @@ const Service = ({}) => {
     EmergencyNotification.refreshState(callback);
 
     return () => clearInterval(interval);
-  }, [setServiceState]);
+  }, []);
 
   const handleStart = () => {
     EmergencyNotification.startService();
@@ -74,25 +68,29 @@ const Service = ({}) => {
     EmergencyNotification.stopService();
   };
 
+  useEffect(() => {
+    if(session) {
+      navigation.navigate('home', {screen: 'current-session'});
+    }
+  }, [session]);
+
   return (
     <Container>
       <Content>
-        {session ? <Session session={session} /> : <Text>TBD</Text>}
+        <Text>TBD</Text>
       </Content>
       <Footer>
         <FooterTab>
           {!started ? (
             <PermissionGate
-              permissions={[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]}
-              force={true}
-            >
+              permissions={[PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE]}>
               <Button onPress={handleStart} primary full>
-                <Text>{t("service:start")}</Text>
+                <Text>{t('service:start')}</Text>
               </Button>
             </PermissionGate>
           ) : (
             <Button onPress={handleStop} danger full>
-              <Text>{t("service:stop")}</Text>
+              <Text>{t('service:stop')}</Text>
             </Button>
           )}
         </FooterTab>

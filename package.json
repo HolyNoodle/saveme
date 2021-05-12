@@ -18,7 +18,7 @@
     "@react-navigation/native": "^5.7.1",
     "@react-navigation/stack": "^5.7.1",
     "i18next": "^19.6.3",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "moment": "^2.27.0",
     "native-base": "^2.13.13",
     "overmind": "^27.0.0",
